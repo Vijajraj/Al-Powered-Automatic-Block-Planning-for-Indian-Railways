@@ -6,13 +6,13 @@
   --gov-blue: #1e3a8a;
   --gov-saffron: #FF9933;
   --gov-green: #138808;
-  --bg-base: #0a1424;
-  --bg-surface: #102136;
-  --bg-surface-2: #162b46;
-  --border: #203a5c;
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --accent: #f59e0b;
+  --bg-base: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-surface-2: #f1f5f9;
+  --border: #cbd5e1;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --accent: #d97706;
 }
 
 * {
@@ -20,8 +20,8 @@
 }
 
 body {
-  background-color: var(--bg-base);
-  color: var(--text-primary);
+  background-color: #f1f5f9;
+  color: #0f172a;
   font-family: 'Inter', 'Segoe UI', Arial, system-ui, sans-serif;
   margin: 0;
   padding: 0;
@@ -43,31 +43,31 @@ body {
 }
 
 .gov-card {
-  background-color: #102136;
-  border: 1px solid #203a5c;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
   border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .table-gov th {
-  background-color: #0b1a2d;
-  color: #cbd5e1;
+  background-color: #f8fafc;
+  color: #1e293b;
   font-weight: 700;
   text-transform: uppercase;
   font-size: 11px;
   letter-spacing: 0.05em;
-  border-bottom: 2px solid #203a5c;
+  border-bottom: 2px solid #cbd5e1;
   padding: 10px 14px;
 }
 
 .table-gov td {
   padding: 10px 14px;
   font-size: 12.5px;
-  border-bottom: 1px solid #182e49;
+  border-bottom: 1px solid #e2e8f0;
   line-height: 1.4;
 }
 
 ::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: #0b1a2d; }
-::-webkit-scrollbar-thumb { background: #2b4c73; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #3b6699; }
+::-webkit-scrollbar-track { background: #e2e8f0; }
+::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #64748b; }

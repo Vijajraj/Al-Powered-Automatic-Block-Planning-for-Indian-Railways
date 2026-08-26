@@ -47,7 +47,7 @@ export default function BlockPlanningPage() {
 
   async function handleOptimize() {
     setOptimizing(true);
-    await new Promise(r => setTimeout(r, 900)); // simulate optimization
+    await new Promise(r => setTimeout(r, 900));
     setConflictResolved(true);
     setSafetyPassed(true);
     setOptimizing(false);
@@ -65,17 +65,17 @@ export default function BlockPlanningPage() {
   return (
     <div className="space-y-5">
       {/* Official Header */}
-      <div className="border-b border-[#203a5c] pb-3 flex flex-wrap items-center justify-between gap-3">
+      <div className="border-b border-slate-300 pb-3 flex flex-wrap items-center justify-between gap-3">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-base font-extrabold text-white uppercase tracking-wider">
+            <h1 className="text-base sm:text-lg font-extrabold text-[#0f2744] uppercase tracking-wider">
               AUTOMATIC BLOCK PLANNING &amp; TIMELINE SCHEDULER
             </h1>
-            <span className="px-2 py-0.5 bg-[#0b1a2d] text-amber-400 border border-[#203a5c] text-[10px] font-mono font-bold rounded">
+            <span className="px-2 py-0.5 bg-slate-100 text-amber-800 border border-slate-300 text-[10px] font-mono font-bold rounded">
               CONTROL CONSOLE MVP
             </span>
           </div>
-          <p className="text-xs text-slate-400 mt-0.5">
+          <p className="text-xs text-slate-600 mt-0.5 font-medium">
             AI-assisted collision-free slot allocation for Engineering, TRD, and S&amp;T maintenance blocks
           </p>
         </div>
@@ -117,22 +117,22 @@ export default function BlockPlanningPage() {
 
       {/* Approved Plan Table */}
       {planApproved && (
-        <div className="gov-card border-emerald-600/70 overflow-hidden">
-          <div className="px-4 py-3 bg-[#061d15] border-b border-emerald-700/60 flex items-center justify-between">
+        <div className="gov-card bg-white border-emerald-500 overflow-hidden shadow-sm">
+          <div className="px-4 py-3 bg-emerald-50 border-b border-emerald-200 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <CheckCircle2 size={16} className="text-emerald-400" />
-              <span className="text-xs font-bold uppercase tracking-wider text-emerald-300">
+              <CheckCircle2 size={16} className="text-emerald-700" />
+              <span className="text-xs font-extrabold uppercase tracking-wider text-emerald-900">
                 OFFICIALLY SANCTIONED BLOCK MASTER PLAN
               </span>
             </div>
-            <span className="text-[10px] font-mono text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-700">
+            <span className="text-[10px] font-mono text-emerald-900 bg-white px-2 py-0.5 rounded border border-emerald-300 font-bold">
               SANCTION AUTHORITY: SR/MAS/OP/2026/08
             </span>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-xs">
               <thead>
-                <tr className="bg-[#081526] text-slate-300 border-b border-[#203a5c]">
+                <tr className="bg-slate-100 text-slate-700 border-b border-slate-300">
                   {['Request ID', 'Department', 'Section', 'Sanctioned Start', 'Sanctioned End', 'Operating Status'].map(h => (
                     <th key={h} className="text-left px-4 py-2.5 text-[10px] uppercase font-bold tracking-wider">{h}</th>
                   ))}
@@ -140,24 +140,24 @@ export default function BlockPlanningPage() {
               </thead>
               <tbody>
                 {plan.map((p, i) => (
-                  <tr key={p.id} className={`border-b border-[#182e49] ${i % 2 === 0 ? 'bg-[#0d1e33]' : 'bg-[#0a1829]'}`}>
-                    <td className="px-4 py-2.5 font-mono font-bold text-amber-400">{p.id}</td>
-                    <td className="px-4 py-2.5 text-slate-200 font-medium">{p.department}</td>
-                    <td className="px-4 py-2.5 font-mono text-slate-200 font-medium">{p.section}</td>
-                    <td className="px-4 py-2.5 font-mono text-emerald-400 font-bold">{p.start}</td>
-                    <td className="px-4 py-2.5 font-mono text-rose-400 font-bold">{p.end}</td>
-                    <td className="px-4 py-2.5"><StatusBadge status="APPROVED" /></td>
+                  <tr key={p.id} className={`border-b border-slate-200 ${i % 2 === 0 ? 'bg-white' : 'bg-slate-50/60'}`}>
+                    <td className="px-4 py-3 font-mono font-bold text-amber-800">{p.id}</td>
+                    <td className="px-4 py-3 text-slate-900 font-semibold">{p.department}</td>
+                    <td className="px-4 py-3 font-mono text-slate-700 font-semibold">{p.section}</td>
+                    <td className="px-4 py-3 font-mono text-emerald-700 font-bold">{p.start}</td>
+                    <td className="px-4 py-3 font-mono text-rose-700 font-bold">{p.end}</td>
+                    <td className="px-4 py-3"><StatusBadge status="APPROVED" /></td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          <div className="px-4 py-2 bg-[#061d15] border-t border-emerald-800 text-[11px] text-emerald-300 flex items-center justify-between">
+          <div className="px-4 py-2.5 bg-emerald-50 border-t border-emerald-200 text-[11px] text-emerald-900 flex items-center justify-between font-medium">
             <span className="flex items-center gap-1.5">
-              <FileCheck size={13} className="text-emerald-400" />
+              <FileCheck size={14} className="text-emerald-700" />
               Transmitted to Divisional Control Room, PWI Field Units, and Station Masters on Line.
             </span>
-            <span className="font-mono text-[10px] text-slate-400">STATUS: ACTIVE MASTER SCHEDULE</span>
+            <span className="font-mono text-[10px] text-emerald-800 font-bold">STATUS: ACTIVE MASTER SCHEDULE</span>
           </div>
         </div>
       )}

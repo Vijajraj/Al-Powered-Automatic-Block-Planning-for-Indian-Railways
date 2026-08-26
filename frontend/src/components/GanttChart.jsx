@@ -45,13 +45,13 @@ export default function GanttChart({ trains = [], plan = [], title = 'Block Plan
   const trainRows = trains.slice(0, 7);
 
   return (
-    <div className="gov-card p-4 space-y-3">
-      <div className="flex items-center justify-between border-b border-[#203a5c] pb-2.5">
-        <div className="text-xs font-extrabold uppercase tracking-wider text-slate-200 flex items-center gap-1.5">
-          <Clock size={14} className="text-amber-400" />
+    <div className="gov-card bg-white p-4 space-y-3">
+      <div className="flex items-center justify-between border-b border-slate-200 pb-2.5">
+        <div className="text-xs font-extrabold uppercase tracking-wider text-slate-900 flex items-center gap-1.5">
+          <Clock size={14} className="text-amber-600" />
           {title}
         </div>
-        <span className="text-[10px] font-mono text-slate-400 bg-[#0b1a2d] px-2 py-0.5 rounded border border-[#203a5c]">
+        <span className="text-[10px] font-mono text-slate-600 bg-slate-100 px-2 py-0.5 rounded border border-slate-300 font-semibold">
           Headway Resolution: 5 Min
         </span>
       </div>
@@ -61,7 +61,7 @@ export default function GanttChart({ trains = [], plan = [], title = 'Block Plan
         {hours.map((h) => (
           <div
             key={h}
-            className="flex-1 text-[10px] text-slate-400 font-mono border-l border-[#203a5c] pl-1 font-semibold"
+            className="flex-1 text-[10px] text-slate-500 font-mono border-l border-slate-300 pl-1 font-bold"
           >
             {String(h).padStart(2, '0')}:00
           </div>
@@ -75,14 +75,14 @@ export default function GanttChart({ trains = [], plan = [], title = 'Block Plan
           <GanttRow
             key={train.id}
             label={train.name || train.id}
-            labelColor="text-sky-300"
+            labelColor="text-sky-900 font-bold"
             blocks={[{ start: train.arrival, end: train.departure, color: TRAIN_COLOR, label: `${train.name} (${train.arrival}-${train.departure})` }]}
           />
         ))}
 
         {/* Separator */}
         {trainRows.length > 0 && Object.keys(depts).length > 0 && (
-          <div className="border-t border-dashed border-[#203a5c] my-2" />
+          <div className="border-t border-dashed border-slate-300 my-2" />
         )}
 
         {/* Department rows */}
@@ -90,7 +90,7 @@ export default function GanttChart({ trains = [], plan = [], title = 'Block Plan
           <GanttRow
             key={dept}
             label={dept}
-            labelColor={dept === 'Engineering' ? 'text-amber-400' : dept === 'TRD' ? 'text-violet-300' : 'text-emerald-400'}
+            labelColor={dept === 'Engineering' ? 'text-amber-800 font-bold' : dept === 'TRD' ? 'text-violet-800 font-bold' : 'text-emerald-800 font-bold'}
             blocks={blocks.map((b) => ({
               start: b.start,
               end: b.end,
@@ -103,14 +103,14 @@ export default function GanttChart({ trains = [], plan = [], title = 'Block Plan
 
         {/* Empty state */}
         {trainRows.length === 0 && Object.keys(depts).length === 0 && (
-          <div className="text-center text-slate-500 py-8 text-xs font-medium">
+          <div className="text-center text-slate-400 py-8 text-xs font-medium">
             Generate an optimized plan to populate the master timeline
           </div>
         )}
       </div>
 
       {/* Legend */}
-      <div className="flex flex-wrap gap-5 mt-4 pt-3 border-t border-[#203a5c] text-[11px] text-slate-300 font-medium">
+      <div className="flex flex-wrap gap-5 mt-4 pt-3 border-t border-slate-200 text-[11px] text-slate-700 font-semibold">
         <span className="flex items-center gap-1.5">
           <span className="w-3.5 h-2.5 inline-block rounded-sm shadow-sm" style={{ background: TRAIN_COLOR }} /> Train Movement Path (COA Timetable)
         </span>
@@ -128,13 +128,13 @@ export default function GanttChart({ trains = [], plan = [], title = 'Block Plan
   );
 }
 
-function GanttRow({ label, labelColor = 'text-slate-300', blocks = [] }) {
+function GanttRow({ label, labelColor = 'text-slate-700', blocks = [] }) {
   return (
     <div className="flex items-center gap-2 h-7">
-      <div className={`w-28 text-[11px] font-mono font-bold truncate ${labelColor} text-right pr-2 shrink-0`}>
+      <div className={`w-28 text-[11px] font-mono truncate ${labelColor} text-right pr-2 shrink-0`}>
         {label}
       </div>
-      <div className="flex-1 h-full bg-[#071324] rounded relative border border-[#203a5c] overflow-hidden">
+      <div className="flex-1 h-full bg-slate-100 rounded relative border border-slate-300 overflow-hidden">
         {blocks.map((block, i) => {
           const left = timeToPercent(block.start);
           const width = durationToPercent(block.start, block.end);
@@ -147,8 +147,8 @@ function GanttRow({ label, labelColor = 'text-slate-300', blocks = [] }) {
                 left: `${left}%`,
                 width: `${width}%`,
                 backgroundColor: block.color,
-                opacity: block.status === 'Re-slotted' ? 0.9 : 1,
-                border: block.status === 'Re-slotted' ? '1px solid #38bdf8' : '1px solid rgba(255,255,255,0.2)',
+                opacity: block.status === 'Re-slotted' ? 0.92 : 1,
+                border: block.status === 'Re-slotted' ? '1px solid #0284c7' : '1px solid rgba(0,0,0,0.15)',
               }}
             >
               <span className="truncate">{block.label}</span>

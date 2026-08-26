@@ -27,13 +27,13 @@ export default function SectionMap({ maintenance = [], trains = [] }) {
   const sel = enriched.find((s) => s.id === selected) || enriched[0];
 
   return (
-    <div className="gov-card p-4 space-y-3">
-      <div className="flex items-center justify-between border-b border-[#203a5c] pb-2">
-        <div className="text-[11px] font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-          <MapPin size={13} className="text-amber-400" />
+    <div className="gov-card bg-white p-4 space-y-3">
+      <div className="flex items-center justify-between border-b border-slate-200 pb-2">
+        <div className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
+          <MapPin size={14} className="text-amber-600" />
           Network / Section Schematic View
         </div>
-        <span className="text-[10px] text-slate-400 font-mono">MAS Division Core Corridor</span>
+        <span className="text-[10px] text-slate-500 font-mono font-medium">MAS Division Core Corridor</span>
       </div>
 
       <div className="flex gap-5 pt-1">
@@ -53,17 +53,17 @@ export default function SectionMap({ maintenance = [], trains = [] }) {
                     <div
                       className={`w-1 h-6 transition-colors ${
                         selected === sec.id
-                          ? 'bg-amber-400 shadow-[0_0_8px_rgba(245,158,11,0.6)]'
+                          ? 'bg-amber-500 shadow-sm'
                           : hasMaint
                           ? 'bg-amber-600'
-                          : 'bg-slate-600'
+                          : 'bg-slate-300'
                       }`}
                     />
                     <span
                       className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded border transition-all ${
                         selected === sec.id
-                          ? 'bg-amber-500 text-slate-950 border-amber-400 font-extrabold'
-                          : 'bg-[#0b1a2d] text-slate-300 border-[#203a5c] group-hover:border-amber-500 group-hover:text-amber-400'
+                          ? 'bg-amber-500 text-slate-950 border-amber-600 font-extrabold shadow-sm'
+                          : 'bg-slate-100 text-slate-700 border-slate-300 group-hover:border-amber-500 group-hover:text-amber-700'
                       }`}
                     >
                       Section {sec.id}
@@ -71,10 +71,10 @@ export default function SectionMap({ maintenance = [], trains = [] }) {
                     <div
                       className={`w-1 h-6 transition-colors ${
                         selected === sec.id
-                          ? 'bg-amber-400 shadow-[0_0_8px_rgba(245,158,11,0.6)]'
+                          ? 'bg-amber-500 shadow-sm'
                           : hasMaint
                           ? 'bg-amber-600'
-                          : 'bg-slate-600'
+                          : 'bg-slate-300'
                       }`}
                     />
                   </button>
@@ -82,10 +82,10 @@ export default function SectionMap({ maintenance = [], trains = [] }) {
 
                 {/* Station node */}
                 <div className="flex items-center gap-2 py-1">
-                  <div className="w-3.5 h-3.5 rounded-full border-2 border-amber-400 bg-[#071324] shadow-sm" />
+                  <div className="w-3.5 h-3.5 rounded-full border-2 border-amber-600 bg-white shadow-sm" />
                   <div>
-                    <div className="text-[11px] font-bold text-slate-200">{stn.name}</div>
-                    <div className="text-[9px] text-slate-400 font-mono">Code: {stn.code}</div>
+                    <div className="text-[11px] font-bold text-slate-900">{stn.name}</div>
+                    <div className="text-[9px] text-slate-500 font-mono font-semibold">Code: {stn.code}</div>
                   </div>
                 </div>
               </div>
@@ -96,51 +96,51 @@ export default function SectionMap({ maintenance = [], trains = [] }) {
         {/* Section Detail Panel */}
         <div className="flex-1 min-h-[220px]">
           {sel ? (
-            <div className="bg-[#0b1a2d] border border-[#203a5c] rounded p-3.5 space-y-3 h-full flex flex-col justify-between">
+            <div className="bg-slate-50 border border-slate-200 rounded p-3.5 space-y-3 h-full flex flex-col justify-between">
               <div>
-                <div className="flex items-center justify-between border-b border-[#1b3657] pb-2 mb-2">
+                <div className="flex items-center justify-between border-b border-slate-200 pb-2 mb-2">
                   <div className="flex items-center gap-1.5">
-                    <ChevronRight size={14} className="text-amber-400" />
-                    <span className="text-xs font-bold text-amber-400 uppercase tracking-wide">
-                      Section Parameter: {sel.id}
+                    <ChevronRight size={14} className="text-amber-600" />
+                    <span className="text-xs font-bold text-slate-900 uppercase tracking-wide">
+                      Section: {sel.id}
                     </span>
                   </div>
-                  <span className="text-[10px] font-mono text-slate-400 bg-[#102136] px-2 py-0.5 rounded border border-[#203a5c]">
+                  <span className="text-[10px] font-mono text-slate-600 bg-white px-2 py-0.5 rounded border border-slate-300 font-medium">
                     {sel.from} ➔ {sel.to}
                   </span>
                 </div>
 
                 <div className="grid grid-cols-2 gap-2 text-xs">
-                  <div className="bg-[#102136] p-2 rounded border border-[#203a5c]">
-                    <div className="text-slate-400 uppercase text-[9px] font-bold">Track &amp; Traction</div>
-                    <div className="text-slate-200 font-medium text-[11px] mt-1">{sel.track}</div>
+                  <div className="bg-white p-2 rounded border border-slate-200">
+                    <div className="text-slate-500 uppercase text-[9px] font-bold">Track &amp; Traction</div>
+                    <div className="text-slate-800 font-semibold text-[11px] mt-0.5">{sel.track}</div>
                   </div>
-                  <div className="bg-[#102136] p-2 rounded border border-[#203a5c]">
-                    <div className="text-slate-400 uppercase text-[9px] font-bold">Active Trains</div>
-                    <div className="text-sky-400 font-bold font-mono text-sm mt-0.5">{sel.activeTrains} Movements</div>
+                  <div className="bg-white p-2 rounded border border-slate-200">
+                    <div className="text-slate-500 uppercase text-[9px] font-bold">Active Trains</div>
+                    <div className="text-sky-800 font-bold font-mono text-sm mt-0.5">{sel.activeTrains} Movements</div>
                   </div>
-                  <div className="bg-[#102136] p-2 rounded border border-[#203a5c]">
-                    <div className="text-slate-400 uppercase text-[9px] font-bold">Maintenance Requests</div>
-                    <div className={`font-bold font-mono text-sm mt-0.5 ${sel.maintenanceReqs > 0 ? 'text-rose-400' : 'text-emerald-400'}`}>
+                  <div className="bg-white p-2 rounded border border-slate-200">
+                    <div className="text-slate-500 uppercase text-[9px] font-bold">Maintenance Requests</div>
+                    <div className={`font-bold font-mono text-sm mt-0.5 ${sel.maintenanceReqs > 0 ? 'text-rose-700' : 'text-emerald-700'}`}>
                       {sel.maintenanceReqs} Requests
                     </div>
                   </div>
-                  <div className="bg-[#102136] p-2 rounded border border-[#203a5c]">
-                    <div className="text-slate-400 uppercase text-[9px] font-bold">Current Block State</div>
-                    <div className={`font-semibold text-xs mt-1 ${sel.currentBlock === 'None' ? 'text-emerald-400' : 'text-amber-400'}`}>
+                  <div className="bg-white p-2 rounded border border-slate-200">
+                    <div className="text-slate-500 uppercase text-[9px] font-bold">Current Block State</div>
+                    <div className={`font-bold text-xs mt-1 ${sel.currentBlock === 'None' ? 'text-emerald-700' : 'text-amber-700'}`}>
                       {sel.currentBlock}
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="text-[10px] text-slate-400 border-t border-[#1b3657] pt-2 flex items-center justify-between">
+              <div className="text-[10px] text-slate-500 border-t border-slate-200 pt-2 flex items-center justify-between font-medium">
                 <span>Signal System: Automatic Block (ABS)</span>
-                <span className="text-slate-400">Headway: 15 min</span>
+                <span>Headway: 15 min</span>
               </div>
             </div>
           ) : (
-            <div className="h-full flex items-center justify-center text-slate-500 text-xs text-center">
+            <div className="h-full flex items-center justify-center text-slate-400 text-xs text-center">
               Click a section label to view details
             </div>
           )}
