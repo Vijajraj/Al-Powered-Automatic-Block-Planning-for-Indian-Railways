@@ -5,12 +5,12 @@
 
 ---
 
-## 🚀 Live Localhost Access
+## Live Localhost Access
 
 The React operations interface is active and accessible locally:
 
 ```
-➜ Local: http://localhost:5173/
+Local: http://localhost:5173/
 ```
 
 To run manually:
@@ -22,33 +22,33 @@ npm run dev
 
 ---
 
-## 🎯 System Overview
+## System Overview
 
 Railway maintenance blocks (Engineering track renewals, TRD overhead electrical inspections, S&T signaling works) must be scheduled without disrupting dense train timetables.
 
 This system provides a **centralized railway control-room interface** that:
-1. **Consumes optimization & planning engine APIs** (`/trains`, `/maintenance`, `/plan`, `/validate`, `/disruption`).
+1. **Consumes optimization and planning engine APIs** (`/trains`, `/maintenance`, `/plan`, `/validate`, `/disruption`).
 2. **Visualizes shared spatio-temporal constraints** across train traffic and departmental maintenance windows using an interactive **Gantt timeline**.
-3. **Detects & resolves scheduling conflicts** with clear operational justifications.
+3. **Detects and resolves scheduling conflicts** with clear operational justifications.
 4. **Enforces human-in-the-loop safety approvals** across 5 critical safety checks before executing blocks.
-5. **Handles real-time disruptions** (Train Delays and Maintenance Overruns) with instant **Detect ➔ Re-slot ➔ Update** replanning.
+5. **Handles real-time disruptions** (Train Delays and Maintenance Overruns) with instant **Detect -> Re-slot -> Update** replanning.
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer | Technologies |
 |---|---|
 | **Frontend Framework** | React 19, Vite 8 |
-| **Styling & UI** | Tailwind CSS v4 (Dark Ops-Room Theme) |
-| **Icons & Visuals** | Lucide React, Custom SVG Railway Schematics & Interactive Gantt Timeline |
+| **Styling and UI** | Tailwind CSS v4 (Dark Ops-Room Theme) |
+| **Icons and Visuals** | Lucide React, Custom SVG Railway Schematics and Interactive Gantt Timeline |
 | **State Management** | Zustand (Global store with reactive updates) |
 | **API Client** | Axios with seamless mock fallback for offline/live judging presentations |
 | **Routing** | React Router DOM v7 |
 
 ---
 
-## 🧭 Application Structure & Pages
+## Application Structure and Pages
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -66,7 +66,7 @@ This system provides a **centralized railway control-room interface** that:
 
 ### 1. Dashboard (`/`)
 - **Real-Time KPIs**: Dynamic counts for Active Sections, Scheduled Trains, Maintenance Requests, and Planned Blocks.
-- **Network / Section Schematic**: Interactive line diagram (**CHENNAI ➔ KANCHIPURAM ➔ ARCOT ➔ VELLORE**). Click any section (`A-B`, `B-C`, `C-D`) to inspect track type, active train count, and maintenance demands.
+- **Network / Section Schematic**: Interactive line diagram (**CHENNAI -> KANCHIPURAM -> ARCOT -> VELLORE**). Click any section (`A-B`, `B-C`, `C-D`) to inspect track type, active train count, and maintenance demands.
 - **Maintenance Queue**: High-level preview of incoming departmental requests.
 - **Operational Timeline**: Quick-look Gantt chart of section activities.
 
@@ -81,27 +81,27 @@ This system provides a **centralized railway control-room interface** that:
 ### 4. Block Planning (`/block-planning`) — *Core Planning Screen*
 - **`[ Generate Optimized Plan ]`**: Requests the optimal schedule from the backend.
 - **Shared Gantt Timeline**: Displays train traffic and departmental blocks competing for track access.
-- **Conflict Detection & Resolution**:
+- **Conflict Detection and Resolution**:
   - Highlights overlapping slots (e.g., `M001 Engineering` vs `Train 12601` at `14:20–14:40`).
   - `[ OPTIMIZE PLAN ]` re-slots maintenance to a feasible window (`14:45–15:45`).
 - **Safety Validation Panel**: 5-point safety checklist:
-  - `✓ Train conflict`
-  - `✓ Section conflict`
-  - `✓ Resource conflict`
-  - `✓ Power constraint (OHE)`
-  - `✓ Operating window compliance`
+  - `[x] Train conflict`
+  - `[x] Section conflict`
+  - `[x] Resource conflict`
+  - `[x] Power constraint (OHE)`
+  - `[x] Operating window compliance`
   - `Overall Status: PASSED`
-- **Human Approval**: Controller clicks `[ APPROVE BLOCK PLAN ]` ➔ locks plan to `PLAN STATUS: APPROVED`.
+- **Human Approval**: Controller clicks `[ APPROVE BLOCK PLAN ]` -> locks plan to `PLAN STATUS: APPROVED`.
 
 ### 5. Disruption Management (`/disruptions`) — *Simulation Screen*
 - **Scenario A: Train Delay Simulation**
   - Select train (`12601`), add delay (`+20 min`), click `[ APPLY DISRUPTION ]`.
   - Alert: `DISRUPTION DETECTED` (Affects `M001`).
-  - Click `[ RE-PLAN ]` ➔ Block re-slotted to `15:30–16:30` (Status: `RE-SLOTTED`).
+  - Click `[ RE-PLAN ]` -> Block re-slotted to `15:30–16:30` (Status: `RE-SLOTTED`).
 - **Scenario B: Maintenance Overrun Simulation**
   - Select request (`M001`), add overrun (`+30 min`), click `[ APPLY ]`.
   - Shows actual end time `16:15` causing a conflict with downstream `M002 TRD`.
-  - Click `[ RE-PLAN ]` ➔ `M002` shifted to `16:30–17:00`.
+  - Click `[ RE-PLAN ]` -> `M002` shifted to `16:30–17:00`.
 - **Live Re-planned Gantt**: Immediately reflects changes visually.
 
 ### 6. Approvals (`/approvals`)
@@ -109,28 +109,28 @@ This system provides a **centralized railway control-room interface** that:
 
 ---
 
-## ⚡ 2-Minute Judging Demo Flow
+## 2-Minute Judging Demo Flow
 
 Follow this sequence for an end-to-end demonstration:
 
-1. **Dashboard** ➔ Show KPI metrics and click on **Section A-B** in the network schematic.
-2. **Maintenance Requests** ➔ Filter by `Engineering` & `Critical` priority.
-3. **Train Schedule** ➔ Highlight train density on section `A-B`.
+1. **Dashboard** -> Show KPI metrics and click on **Section A-B** in the network schematic.
+2. **Maintenance Requests** -> Filter by `Engineering` and `Critical` priority.
+3. **Train Schedule** -> Highlight train density on section `A-B`.
 4. **Block Planning**:
    - Click **`[ Generate Optimized Plan ]`**.
    - Review pre-optimization conflict on the timeline and conflict card (`M001` vs `Train 12601`).
-   - Click **`[ OPTIMIZE PLAN ]`** ➔ observe conflict resolved and safety validation checklist passing (`PASSED`).
-   - Click **`[ APPROVE BLOCK PLAN ]`** ➔ status updates to `APPROVED`.
+   - Click **`[ OPTIMIZE PLAN ]`** -> observe conflict resolved and safety validation checklist passing (`PASSED`).
+   - Click **`[ APPROVE BLOCK PLAN ]`** -> status updates to `APPROVED`.
 5. **Disruption Management**:
-   - Under **Simulate Train Delay**, select `Train 12601` with `+20 min` delay ➔ click **`[ APPLY DISRUPTION ]`**.
-   - Click **`[ RE-PLAN ]`** ➔ observe `M001` re-slotted to `15:30–16:30`.
-   - Under **Simulate Maintenance Overrun**, add `+30 min` to `M001` ➔ click **`[ APPLY ]`** ➔ **`[ RE-PLAN ]`**.
+   - Under **Simulate Train Delay**, select `Train 12601` with `+20 min` delay -> click **`[ APPLY DISRUPTION ]`**.
+   - Click **`[ RE-PLAN ]`** -> observe `M001` re-slotted to `15:30–16:30`.
+   - Under **Simulate Maintenance Overrun**, add `+30 min` to `M001` -> click **`[ APPLY ]`** -> **`[ RE-PLAN ]`**.
    - Review updated Gantt timeline below.
-6. **Approvals** ➔ Show the finalized, controller-approved schedule.
+6. **Approvals** -> Show the finalized, controller-approved schedule.
 
 ---
 
-## 🔌 Backend API Integration
+## Backend API Integration
 
 Configured in `frontend/src/api/client.js` with `http://localhost:8000`:
 
@@ -146,7 +146,7 @@ Configured in `frontend/src/api/client.js` with `http://localhost:8000`:
 
 ---
 
-## 📦 Build & Production
+## Build and Production
 
 ```bash
 # Build production bundle

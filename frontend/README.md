@@ -2,7 +2,7 @@
 
 React + Vite + Tailwind CSS v4 railway operations interface for the **AI-Powered Automatic Block Planning System**.
 
-## 🚀 Running Locally
+## Running Locally
 
 ```bash
 npm install
@@ -11,7 +11,7 @@ npm run dev -- --port 5173
 
 Access at: `http://localhost:5173/`
 
-## 🛠️ Build & Verification
+## Build and Verification
 
 ```bash
 # Build production bundle
