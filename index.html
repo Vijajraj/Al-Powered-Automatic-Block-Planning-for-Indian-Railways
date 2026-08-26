@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Block Planning &amp; Maintenance Portal | Indian Railways | Government of India</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'Arial', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Consolas', 'monospace'],
+          },
+          colors: {
+            gov: {
+              navy: '#0f2744',
+              blue: '#1e3a8a',
+              saffron: '#FF9933',
+              green: '#138808',
+              ash: '#f8fafc',
+              border: '#cbd5e1'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #f1f5f9;
+      color: #1e293b;
+      margin: 0;
+      padding: 0;
+    }
+
+    .tricolor-bar {
+      height: 4px;
+      background: linear-gradient(to right, #FF9933 0%, #FF9933 33.33%, #FFFFFF 33.33%, #FFFFFF 66.66%, #138808 66.66%, #138808 100%);
+    }
+
+    .gov-card {
+      background-color: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .table-gov th {
+      background-color: #f8fafc;
+      color: #1e293b;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 11.5px;
+      letter-spacing: 0.04em;
+      border-bottom: 2px solid #cbd5e1;
+      padding: 10px 14px;
+    }
+
+    .table-gov td {
+      padding: 10px 14px;
+      font-size: 13px;
+      border-bottom: 1px solid #e2e8f0;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen flex flex-col antialiased">
+
+  <!-- 1. TOP NATIONAL / GIGW ACCESSIBILITY BAR -->
+  <div class="bg-[#071324] text-slate-300 text-xs border-b border-slate-700">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-wrap items-center justify-between gap-2">
+      <!-- Left: Bilingual Government Identity -->
+      <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2">
+          <span class="font-semibold text-white">भारत सरकार</span>
+          <span class="text-slate-500">|</span>
+          <span class="font-semibold text-white">Government of India</span>
+        </div>
+        <span class="text-slate-600 hidden sm:inline">&bull;</span>
+        <div class="hidden sm:flex items-center gap-1.5 text-slate-300">
+          <span>रेल मंत्रालय</span>
+          <span class="text-slate-500">|</span>
+          <span>Ministry of Railways</span>
+        </div>
+      </div>
+
+      <!-- Right: Operational Metadata & Accessibility -->
+      <div class="flex items-center gap-4 text-xs">
+        <div class="flex items-center gap-1.5 bg-slate-800/80 px-2.5 py-0.5 rounded border border-slate-700">
+          <span class="text-slate-400 font-medium">Division:</span>
+          <strong class="text-white">Chennai Division (MAS)</strong>
+        </div>
+        <div class="hidden md:flex items-center gap-1.5">
+          <span class="text-slate-400 font-medium">Shift:</span>
+          <strong class="text-slate-200">Day (06:00 - 14:00)</strong>
+        </div>
+        <div class="hidden lg:flex items-center gap-1.5 border-l border-slate-700 pl-3">
+          <span class="text-slate-400 font-medium">Date:</span>
+          <span class="font-mono text-slate-200 font-semibold">25 Aug 2026</span>
+        </div>
+        <div class="flex items-center gap-1 border-l border-slate-700 pl-3">
+          <button class="px-2 py-0.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded text-[11px] border border-slate-600 font-bold">A-</button>
+          <button class="px-2 py-0.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded text-[11px] border border-slate-600 font-bold">A</button>
+          <button class="px-2 py-0.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded text-[11px] border border-slate-600 font-bold">A+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- National Tricolor Accent Bar -->
+  <div class="tricolor-bar"></div>
+
+  <!-- 2. MAIN PORTAL HEADER -->
+  <header class="bg-white border-b border-slate-300 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
+      
+      <!-- Brand / Emblem & Title -->
+      <div class="flex items-center gap-3.5">
+        <div class="w-12 h-12 bg-[#0f2744] text-white flex items-center justify-center rounded font-bold border border-slate-700 shadow-sm">
+          <i data-lucide="train" class="w-6 h-6 text-amber-400"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2.5">
+            <h1 class="text-lg sm:text-xl font-extrabold text-[#0f2744] tracking-tight uppercase">
+              BLOCK PLANNING &amp; MAINTENANCE
+            </h1>
+            <span class="px-2.5 py-0.5 bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-bold rounded uppercase tracking-wide">
+              Planning Active
+            </span>
+          </div>
+          <p class="text-xs text-slate-600 font-medium mt-0.5">
+            Indian Railways &bull; Operating &amp; Engineering Department (Control Office, Chennai Division)
+          </p>
+        </div>
+      </div>
+
+      <!-- Section Controller ID -->
+      <div class="flex items-center gap-3">
+        <div class="text-right hidden sm:block">
+          <div class="text-xs font-bold text-slate-800">Console ID: MAS-CTRL-04</div>
+          <div class="text-[11px] text-slate-500 font-mono">COA Integration: Active &bull; Headway Sync: OK</div>
+        </div>
+        <div class="w-10 h-10 bg-slate-100 border border-slate-300 rounded flex items-center justify-center text-slate-700">
+          <i data-lucide="user-check" class="w-5 h-5 text-[#0f2744]"></i>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Navigation Menu Bar -->
+    <nav class="bg-[#0f2744] text-white border-t border-slate-800">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between text-xs sm:text-sm font-semibold">
+        <div class="flex flex-wrap items-center">
+          <a href="#" class="bg-amber-500 text-[#0f2744] px-4 py-2.5 flex items-center gap-1.5 font-bold shadow-sm">
+            <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard
+          </a>
+          <a href="#" class="px-4 py-2.5 hover:bg-blue-900 transition flex items-center gap-1.5 border-r border-slate-700 text-slate-200">
+            <i data-lucide="clipboard-list" class="w-4 h-4"></i> Block Requests
+          </a>
+          <a href="#" class="px-4 py-2.5 hover:bg-blue-900 transition flex items-center gap-1.5 border-r border-slate-700 text-slate-200">
+            <i data-lucide="clock" class="w-4 h-4"></i> Timetable &amp; Position
+          </a>
+          <a href="#" class="px-4 py-2.5 hover:bg-blue-900 transition flex items-center gap-1.5 border-r border-slate-700 text-slate-200">
+            <i data-lucide="shield-check" class="w-4 h-4"></i> Safety Approvals
+          </a>
+          <a href="#" class="px-4 py-2.5 hover:bg-blue-900 transition flex items-center gap-1.5 border-r border-slate-700 text-slate-200">
+            <i data-lucide="alert-triangle" class="w-4 h-4"></i> Disruption Log
+          </a>
+          <a href="#" class="px-4 py-2.5 hover:bg-blue-900 transition flex items-center gap-1.5 border-r border-slate-700 text-slate-200">
+            <i data-lucide="file-text" class="w-4 h-4"></i> Reports &amp; MIS
+          </a>
+        </div>
+        <div class="hidden lg:flex items-center gap-2 text-slate-300 pr-2 text-xs">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="font-mono">Real-time Coordination: Normal</span>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- 3. NOTICE / OPERATIONAL ALERT RIBBON -->
+  <div class="bg-amber-50 border-b border-amber-200 text-amber-900 text-xs sm:text-sm px-4 py-2">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-2.5">
+        <span class="px-2 py-0.5 bg-amber-600 text-white font-bold text-xs rounded uppercase tracking-wide">Notice</span>
+        <span class="font-medium text-slate-800">Section B-14 Track Maintenance (Deep Screening / Tamping) scheduled for today. Preceding caution orders updated on COA portal.</span>
+      </div>
+      <span class="text-xs font-mono text-amber-800 font-semibold hidden md:inline">Ref: MAS-DIV-NOT-2026/84</span>
+    </div>
+  </div>
+
+  <!-- 4. MAIN PAGE CONTENT (Normal Full-Width Responsive Container) -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6 flex-1 w-full">
+
+    <!-- 4.1. MAIN SUMMARY (4 Operational Cards) -->
+    <section>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Card 1 -->
+        <div class="gov-card p-4 border-t-4 border-t-slate-600 bg-white">
+          <div class="flex items-center justify-between text-slate-500">
+            <span class="text-xs font-bold uppercase tracking-wider">PENDING REQUESTS</span>
+            <i data-lucide="inbox" class="w-5 h-5 text-slate-400"></i>
+          </div>
+          <div class="text-3xl font-bold font-mono text-slate-800 mt-2">24</div>
+          <div class="text-xs text-slate-500 mt-1">Maintenance intake queue</div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="gov-card p-4 border-t-4 border-t-blue-700 bg-white">
+          <div class="flex items-center justify-between text-blue-900">
+            <span class="text-xs font-bold uppercase tracking-wider">PLANNED BLOCKS</span>
+            <i data-lucide="calendar-check" class="w-5 h-5 text-blue-700"></i>
+          </div>
+          <div class="text-3xl font-bold font-mono text-blue-900 mt-2">15</div>
+          <div class="text-xs text-slate-500 mt-1">Scheduled in today's master plan</div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="gov-card p-4 border-t-4 border-t-rose-600 bg-white">
+          <div class="flex items-center justify-between text-rose-700">
+            <span class="text-xs font-bold uppercase tracking-wider">CONFLICTS</span>
+            <i data-lucide="alert-octagon" class="w-5 h-5 text-rose-600"></i>
+          </div>
+          <div class="text-3xl font-bold font-mono text-rose-700 mt-2">03</div>
+          <div class="text-xs text-rose-600 font-semibold mt-1">Section mitigation required</div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="gov-card p-4 border-t-4 border-t-amber-600 bg-white">
+          <div class="flex items-center justify-between text-amber-800">
+            <span class="text-xs font-bold uppercase tracking-wider">AWAITING APPROVAL</span>
+            <i data-lucide="user-check" class="w-5 h-5 text-amber-700"></i>
+          </div>
+          <div class="text-3xl font-bold font-mono text-amber-700 mt-2">06</div>
+          <div class="text-xs text-slate-500 mt-1">Pending with Sr. DOM / Control</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4.2. TWO-COLUMN OPERATIONAL SECTION (MAINTENANCE REQUESTS + PROPOSED BLOCK) -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      
+      <!-- Left Column (7 cols): MAINTENANCE BLOCK REQUESTS TABLE -->
+      <div class="lg:col-span-7 gov-card flex flex-col justify-between">
+        <div>
+          <div class="px-5 py-3.5 bg-slate-100 border-b border-slate-300 flex items-center justify-between">
+            <h2 class="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-800 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 bg-[#0f2744]"></span>
+              MAINTENANCE BLOCK REQUESTS
+            </h2>
+            <span class="text-xs text-slate-600 font-mono">Division Section: MAS - AJJ Line</span>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left table-gov">
+              <thead>
+                <tr>
+                  <th>Department</th>
+                  <th>Section</th>
+                  <th>Work</th>
+                  <th>Priority</th>
+                  <th>Duration</th>
+                  <th class="text-right">Status</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200 font-sans">
+                <!-- Row 1: Engineering B-14 -->
+                <tr class="bg-blue-50/70 font-medium hover:bg-blue-50 transition">
+                  <td class="font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-blue-700"></span> Engineering
+                  </td>
+                  <td class="font-mono font-bold text-blue-900">B-14</td>
+                  <td class="text-slate-800">Track Maintenance</td>
+                  <td>
+                    <span class="inline-block px-2.5 py-0.5 bg-rose-100 text-rose-800 border border-rose-300 rounded text-xs font-bold">
+                      Critical
+                    </span>
+                  </td>
+                  <td class="font-mono text-slate-700">45 min</td>
+                  <td class="text-right">
+                    <span class="inline-block px-2.5 py-0.5 bg-amber-100 text-amber-800 border border-amber-300 rounded text-xs font-bold">
+                      Pending
+                    </span>
+                  </td>
+                </tr>
+
+                <!-- Row 2: TRD B-16 -->
+                <tr class="hover:bg-slate-50 transition">
+                  <td class="font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-amber-600"></span> TRD
+                  </td>
+                  <td class="font-mono font-bold text-slate-800">B-16</td>
+                  <td class="text-slate-700">OHE Inspection</td>
+                  <td>
+                    <span class="inline-block px-2.5 py-0.5 bg-amber-100 text-amber-800 border border-amber-300 rounded text-xs font-semibold">
+                      High
+                    </span>
+                  </td>
+                  <td class="font-mono text-slate-700">30 min</td>
+                  <td class="text-right">
+                    <span class="inline-block px-2.5 py-0.5 bg-blue-100 text-blue-800 border border-blue-300 rounded text-xs font-semibold">
+                      Planned
+                    </span>
+                  </td>
+                </tr>
+
+                <!-- Row 3: S&T B-12 -->
+                <tr class="hover:bg-slate-50 transition">
+                  <td class="font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-slate-600"></span> S&T
+                  </td>
+                  <td class="font-mono font-bold text-slate-800">B-12</td>
+                  <td class="text-slate-700">Signal Maintenance</td>
+                  <td>
+                    <span class="inline-block px-2.5 py-0.5 bg-slate-100 text-slate-700 border border-slate-300 rounded text-xs font-semibold">
+                      Medium
+                    </span>
+                  </td>
+                  <td class="font-mono text-slate-700">25 min</td>
+                  <td class="text-right">
+                    <span class="inline-block px-2.5 py-0.5 bg-amber-100 text-amber-800 border border-amber-300 rounded text-xs font-bold">
+                      Pending
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="px-5 py-2.5 bg-slate-50 border-t border-slate-200 text-xs text-slate-600 flex items-center justify-between">
+          <span>Displaying current shift queue for Engineering, TRD, and S&T</span>
+          <span class="font-mono font-bold text-slate-700">Total Queue Depth: 24 Requests</span>
+        </div>
+      </div>
+
+      <!-- Right Column (5 cols): PROPOSED BLOCK PANEL -->
+      <div class="lg:col-span-5 gov-card border-l-4 border-l-[#1e3a8a] flex flex-col justify-between">
+        <div>
+          <div class="px-5 py-3.5 bg-slate-100 border-b border-slate-300 flex items-center justify-between">
+            <h2 class="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-800 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 bg-[#1e3a8a]"></span>
+              PROPOSED BLOCK
+            </h2>
+            <span class="text-xs text-slate-700 font-mono bg-slate-200 px-2 py-0.5 rounded">Ref: BLK-MAS-2026-084</span>
+          </div>
+
+          <div class="p-5 space-y-4">
+            <!-- Summary Row -->
+            <div class="flex items-start justify-between border-b border-slate-200 pb-3">
+              <div>
+                <div class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                  <span>Section: <strong class="font-mono text-blue-900 bg-blue-50 px-2 py-0.5 border border-blue-200 rounded">B-14</strong></span>
+                  <span class="text-slate-300">|</span>
+                  <span>Dept: <strong class="text-slate-900">Engineering</strong></span>
+                </div>
+                <div class="text-xs text-slate-700 mt-1 font-medium">
+                  Work: <span class="font-semibold text-slate-900">Track Maintenance (Deep Screening / Tamping)</span>
+                </div>
+              </div>
+
+              <!-- Time Badge -->
+              <div class="text-right bg-slate-50 px-3 py-1.5 border border-slate-300 rounded">
+                <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Block Time</div>
+                <div id="propSlotTime" class="text-base font-black font-mono text-slate-900 mt-0.5">
+                  14:20 &ndash; 15:05
+                </div>
+              </div>
+            </div>
+
+            <!-- Parameters 4-Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-center text-xs">
+              <div class="bg-slate-50 p-2.5 border border-slate-200 rounded">
+                <div class="text-slate-500 text-[10.5px] font-semibold uppercase">Estimated Duration</div>
+                <div class="font-bold font-mono text-slate-800 mt-1 text-sm">45 min</div>
+              </div>
+              <div class="bg-slate-50 p-2.5 border border-slate-200 rounded">
+                <div class="text-slate-500 text-[10.5px] font-semibold uppercase">Train Conflict</div>
+                <div class="font-bold text-emerald-700 mt-1 text-sm">None</div>
+              </div>
+              <div class="bg-slate-50 p-2.5 border border-slate-200 rounded">
+                <div class="text-slate-500 text-[10.5px] font-semibold uppercase">Safety Check</div>
+                <div class="font-bold text-emerald-700 mt-1 text-sm">Passed &#10003;</div>
+              </div>
+              <div class="bg-slate-50 p-2.5 border border-slate-200 rounded">
+                <div class="text-slate-500 text-[10.5px] font-semibold uppercase">Traffic Impact</div>
+                <div class="font-bold text-blue-900 mt-1 text-sm">Low</div>
+              </div>
+            </div>
+
+            <!-- Context Info -->
+            <div class="text-xs text-slate-600 bg-slate-50 p-2.5 border border-slate-200 rounded flex items-center gap-2">
+              <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+              <span>Verified against COA timetable and standard 15-minute headway safety buffer.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-5 pt-0">
+          <button onclick="handleReviewBlock()" class="w-full py-2.5 bg-[#0f2744] hover:bg-[#1e3a8a] text-white text-xs sm:text-sm font-bold rounded border border-slate-700 transition flex items-center justify-center gap-2 shadow-sm">
+            <i data-lucide="file-search" class="w-4 h-4"></i> REVIEW BLOCK SPECIFICATION
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- 4.3. TRAIN & BLOCK POSITION TIMELINE (Full Width) -->
+    <section class="gov-card">
+      <div class="px-5 py-3.5 bg-slate-100 border-b border-slate-300 flex flex-wrap items-center justify-between gap-2">
+        <h2 class="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-800 flex items-center gap-2">
+          <span class="w-2.5 h-2.5 bg-slate-700"></span>
+          TRAIN &amp; BLOCK POSITION
+        </h2>
+        <div class="flex items-center gap-4 text-xs sm:text-sm font-semibold">
+          <span class="flex items-center gap-1.5 text-slate-700">
+            <span class="w-3.5 h-2.5 bg-[#1e3a8a] inline-block"></span> Train Movement
+          </span>
+          <span class="flex items-center gap-1.5 text-slate-700">
+            <span class="w-3.5 h-2.5 bg-amber-600 inline-block"></span> Maintenance Block
+          </span>
+        </div>
+      </div>
+
+      <div class="p-5">
+        <!-- Time Axis Container -->
+        <div class="bg-slate-50 p-4 border border-slate-300 font-mono text-xs sm:text-sm">
+          
+          <!-- Ticks Header -->
+          <div class="grid grid-cols-4 text-slate-600 pb-2 border-b border-slate-300 font-bold">
+            <div class="text-left">13:00</div>
+            <div class="text-left pl-6">14:00</div>
+            <div class="text-left pl-12">15:00</div>
+            <div class="text-right">16:00</div>
+          </div>
+
+          <!-- Tracks Stack -->
+          <div class="pt-3 space-y-3 font-sans">
+            
+            <!-- Track 1: Train Movement -->
+            <div class="flex items-center gap-3">
+              <span class="w-16 sm:w-20 text-xs font-bold text-slate-700 uppercase">Trains</span>
+              <div class="flex-1 h-8 bg-white rounded relative border border-slate-300 overflow-hidden">
+                <!-- Train 1: 12674 Cheran Exp (13:10 - 13:50) -->
+                <div class="absolute left-[5%] w-[25%] h-full bg-[#1e3a8a] text-white flex items-center justify-center font-mono font-bold text-xs border-r border-slate-900" title="Train 12674 Cheran Exp">
+                  Train 12674 (Cheran Exp)
+                </div>
+                <!-- Train 2: 12623 MAS-TVC Mail (15:15 - 15:45) -->
+                <div class="absolute left-[72%] w-[16%] h-full bg-[#1e3a8a] text-white flex items-center justify-center font-mono font-bold text-xs border-r border-slate-900" title="Train 12623 MAS-TVC Mail">
+                  12623 Mail
+                </div>
+                <!-- Train 3: 16127 Guruvayur Exp (15:45 - 16:05) -->
+                <div class="absolute left-[89%] w-[10%] h-full bg-[#2563eb] text-white flex items-center justify-center font-mono font-bold text-xs" title="Train 16127 Guruvayur Exp">
+                  16127
+                </div>
+              </div>
+            </div>
+
+            <!-- Track 2: Engineering Block (B-14) -->
+            <div class="flex items-center gap-3">
+              <span class="w-16 sm:w-20 text-xs font-bold text-blue-900 uppercase">ENG</span>
+              <div class="flex-1 h-8 bg-white rounded relative border border-slate-300">
+                <div id="timelineEngBlock" class="absolute left-[44%] w-[25%] h-full bg-amber-600 text-white flex items-center justify-center font-mono font-bold text-xs border border-amber-700 transition-all duration-300 shadow-sm">
+                  <span id="timelineEngText">B-14 Track Maintenance (45 min)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Track 3: TRD Block (B-16) -->
+            <div class="flex items-center gap-3">
+              <span class="w-16 sm:w-20 text-xs font-bold text-slate-700 uppercase">TRD</span>
+              <div class="flex-1 h-8 bg-white rounded relative border border-slate-300">
+                <div class="absolute left-[68%] w-[18%] h-full bg-slate-600 text-white flex items-center justify-center font-mono font-bold text-xs border border-slate-700">
+                  B-16 OHE Inspection (30 min)
+                </div>
+              </div>
+            </div>
+
+            <!-- Track 4: S&T Block (B-12) -->
+            <div class="flex items-center gap-3">
+              <span class="w-16 sm:w-20 text-xs font-bold text-slate-700 uppercase">S&T</span>
+              <div class="flex-1 h-8 bg-white rounded relative border border-slate-300">
+                <div class="absolute left-[84%] w-[14%] h-full bg-slate-500 text-white flex items-center justify-center font-mono font-bold text-xs border border-slate-600">
+                  B-12 Signal (25 min)
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Timeline Status Footer -->
+          <div class="mt-3.5 pt-2 border-t border-slate-300 flex flex-wrap items-center justify-between text-xs text-slate-600 font-sans gap-2">
+            <span>Section Clearances: MAS - AJJ Fast Lines verified</span>
+            <span class="font-mono font-bold text-slate-800">Standard Safety Headway Margin: 15 min</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4.4. BOTTOM DUAL SECTION: BLOCK SAFETY & APPROVAL + BLOCK STATUS / DISRUPTION -->
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      
+      <!-- 6. BLOCK SAFETY & APPROVAL -->
+      <div class="gov-card p-5 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between border-b border-slate-200 pb-2.5 mb-3.5">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 bg-emerald-700"></span>
+              <h3 class="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-900">
+                BLOCK SAFETY &amp; APPROVAL
+              </h3>
+            </div>
+            <span class="text-xs text-slate-500 font-mono">Interlock Verified</span>
+          </div>
+
+          <!-- Checklist -->
+          <div class="space-y-2 text-xs sm:text-sm mb-5 font-medium">
+            <div class="flex items-center justify-between bg-slate-50 px-3.5 py-2 border border-slate-200 rounded">
+              <span class="text-slate-600">Track Availability</span>
+              <strong class="text-emerald-700 font-semibold">Confirmed &#10003;</strong>
+            </div>
+            <div class="flex items-center justify-between bg-slate-50 px-3.5 py-2 border border-slate-200 rounded">
+              <span class="text-slate-600">Train Conflict</span>
+              <strong class="text-emerald-700 font-semibold">None</strong>
+            </div>
+            <div class="flex items-center justify-between bg-slate-50 px-3.5 py-2 border border-slate-200 rounded">
+              <span class="text-slate-600">Department Conflict</span>
+              <strong class="text-emerald-700 font-semibold">None</strong>
+            </div>
+            <div class="flex items-center justify-between bg-slate-50 px-3.5 py-2 border border-slate-200 rounded">
+              <span class="text-slate-600">Safety Conditions</span>
+              <strong class="text-emerald-700 font-semibold">Passed &#10003;</strong>
+            </div>
+            <div class="flex items-center justify-between bg-slate-50 px-3.5 py-2 border border-slate-200 rounded">
+              <span class="text-slate-600">Approval Status</span>
+              <span id="approvalBadge" class="text-amber-800 font-bold px-2.5 py-0.5 bg-amber-100 border border-amber-300 rounded text-xs">Pending</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="space-y-2.5 pt-2 border-t border-slate-200">
+          <button id="approveBtn" onclick="handleApproveBlock()" class="w-full py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white text-xs sm:text-sm font-bold rounded border border-emerald-800 transition flex items-center justify-center gap-2 shadow-sm">
+            <i data-lucide="check" class="w-4 h-4"></i> <span id="approveBtnLabel">APPROVE BLOCK</span>
+          </button>
+          <button onclick="handleViewConditions()" class="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-semibold rounded border border-slate-300 transition flex items-center justify-center gap-1.5">
+            VIEW CONDITIONS &amp; ISOLATION MATRIX
+          </button>
+        </div>
+      </div>
+
+      <!-- 7. BLOCK STATUS / DISRUPTION SECTION -->
+      <div class="gov-card p-5 border-l-4 border-l-rose-600 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between border-b border-slate-200 pb-2.5 mb-3.5">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 bg-rose-600"></span>
+              <h3 class="text-xs sm:text-sm font-bold uppercase tracking-wider text-rose-900">
+                BLOCK STATUS
+              </h3>
+            </div>
+            <span class="px-2.5 py-0.5 bg-rose-100 text-rose-800 text-xs font-bold border border-rose-300 rounded uppercase">Operational Alert</span>
+          </div>
+
+          <!-- Alert Notice -->
+          <div class="bg-rose-50 border border-rose-200 p-3.5 mb-4 rounded">
+            <div class="text-xs sm:text-sm font-bold text-rose-900 flex items-center justify-between">
+              <span>B-14 &mdash; WORK OVERRUN</span>
+              <span class="text-rose-700 font-mono font-bold text-sm">+12 min</span>
+            </div>
+            <div class="text-xs sm:text-sm text-slate-700 mt-1.5">
+              Current Status: <strong class="text-rose-800">Revised Slot Required</strong>
+            </div>
+          </div>
+
+          <!-- Slots info -->
+          <div class="bg-slate-50 p-3 border border-slate-200 text-xs sm:text-sm font-mono space-y-1.5 mb-4 rounded">
+            <div class="flex justify-between text-slate-600">
+              <span>Original Slot:</span>
+              <strong class="text-slate-800">14:20 &ndash; 15:05</strong>
+            </div>
+            <div class="flex justify-between text-blue-900 font-bold">
+              <span>Revised Slot:</span>
+              <strong class="text-blue-900">15:20 &ndash; 16:05</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Revise Action Button -->
+        <div class="pt-2 border-t border-slate-200">
+          <button id="reviseActionBtn" onclick="toggleRevisionState()" class="w-full py-2.5 bg-rose-700 hover:bg-rose-800 text-white text-xs sm:text-sm font-bold rounded border border-rose-900 transition flex items-center justify-center gap-2 shadow-sm">
+            <i data-lucide="clock" class="w-4 h-4"></i> <span id="reviseActionBtnText">REVISE BLOCK</span>
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- 5. INDIAN GOVERNMENT / INDIAN RAILWAYS STANDARD FOOTER -->
+  <footer class="bg-[#0b1626] text-slate-400 text-xs border-t-2 border-amber-500 mt-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b border-slate-800">
+        <div>
+          <h4 class="text-white font-bold text-xs uppercase tracking-wider mb-2.5">Block Planning &amp; Maintenance Management System</h4>
+          <p class="text-xs leading-relaxed text-slate-400">
+            Official operational console for Southern Railway, Chennai Division. Synchronized with Control Office Application (COA) and National Train Enquiry System (NTES).
+          </p>
+        </div>
+
+        <div>
+          <h4 class="text-white font-bold text-xs uppercase tracking-wider mb-2.5">Government Compliance &amp; Guidelines</h4>
+          <ul class="space-y-1.5 text-xs text-slate-400">
+            <li>&bull; <a href="#" class="hover:text-white">Guidelines for Indian Government Websites (GIGW)</a></li>
+            <li>&bull; <a href="#" class="hover:text-white">Ministry of Railways Official Portal</a></li>
+            <li>&bull; <a href="#" class="hover:text-white">Centre for Railway Information Systems (CRIS)</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-white font-bold text-xs uppercase tracking-wider mb-2.5">Helpdesk &amp; Technical Support</h4>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Control Office Helpdesk: Extn. 2244 / 2245 (Railway Phone)<br />
+            Division Telecom &amp; S&T Desk: 044-25353535<br />
+            System Version: COA-BPMS-MAS-6.4
+          </p>
+        </div>
+      </div>
+
+      <div class="pt-6 flex flex-wrap items-center justify-between text-xs text-slate-400 gap-3">
+        <div>
+          Website Content Managed by <strong>Ministry of Railways, Government of India</strong>. Designed and Hosted by <strong>Centre for Railway Information Systems (CRIS)</strong>.
+        </div>
+        <div class="font-mono text-slate-400">
+          Last Updated: 25 August 2026
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- OPERATIONAL MODAL (Conditions / Details) -->
+  <div id="conditionsModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white border-2 border-slate-700 rounded max-w-lg w-full p-5 shadow-2xl text-slate-900 text-xs sm:text-sm space-y-3">
+      <div class="flex items-center justify-between border-b border-slate-300 pb-2.5">
+        <h4 class="font-bold text-slate-900 uppercase text-xs sm:text-sm">
+          Safety &amp; Operational Conditions Matrix &bull; Section B-14
+        </h4>
+        <button onclick="closeConditionsModal()" class="text-slate-500 hover:text-black font-bold text-xl leading-none">
+          &times;
+        </button>
+      </div>
+
+      <div class="space-y-2 text-xs sm:text-sm text-slate-700">
+        <div class="p-3 bg-slate-50 border border-slate-200 space-y-2 rounded">
+          <div><strong>1. Track Isolation:</strong> Up line signals 14A &amp; 14B set to danger. Interlocking levers locked at Signal Cabin MAS.</div>
+          <div><strong>2. OHE Power Block:</strong> TRD isolation permit logged with Traction Power Controller (TPC/MAS).</div>
+          <div><strong>3. Speed Restriction:</strong> Permanent Way Inspector (PWI) Caution Order 30 km/h post-work.</div>
+          <div><strong>4. Preceding Train Buffer:</strong> Train 12674 (Cheran Exp) cleared section block at 13:52 (+28 min buffer).</div>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-3 border-t border-slate-200">
+        <button onclick="closeConditionsModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs sm:text-sm font-bold rounded">
+          CLOSE
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toastNotification" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-200 px-4 py-2.5 rounded bg-slate-900 text-white text-xs sm:text-sm border border-slate-700 shadow-xl pointer-events-none font-sans flex items-center gap-2">
+    <i data-lucide="info" class="w-4 h-4 text-blue-400"></i>
+    <span id="toastMsg">Operational action logged</span>
+  </div>
+
+  <!-- JAVASCRIPT STATE ENGINE -->
+  <script>
+    lucide.createIcons();
+
+    let isRevised = false;
+    let isApproved = false;
+
+    function showToast(msg) {
+      const toast = document.getElementById('toastNotification');
+      document.getElementById('toastMsg').innerText = msg;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 2400);
+    }
+
+    function toggleRevisionState() {
+      isRevised = !isRevised;
+      const timelineBlock = document.getElementById('timelineEngBlock');
+      const timelineText = document.getElementById('timelineEngText');
+      const propSlotTime = document.getElementById('propSlotTime');
+      const reviseActionBtnText = document.getElementById('reviseActionBtnText');
+
+      if (isRevised) {
+        timelineBlock.style.left = '76%';
+        timelineBlock.style.width = '22%';
+        timelineBlock.className = 'absolute h-full bg-emerald-700 text-white flex items-center justify-center font-mono font-bold text-xs border border-emerald-800 transition-all duration-300 shadow-sm';
+        timelineText.innerText = 'B-14 Track Maint (Revised: 15:20-16:05)';
+        propSlotTime.innerHTML = '<span class="text-rose-600 line-through text-xs mr-1.5 font-normal">14:20–15:05</span> 15:20–16:05';
+        if (reviseActionBtnText) reviseActionBtnText.innerText = 'RESET ORIGINAL SLOT';
+        showToast('Block B-14 revised to 15:20 – 16:05 in operational schedule');
+      } else {
+        timelineBlock.style.left = '44%';
+        timelineBlock.style.width = '25%';
+        timelineBlock.className = 'absolute h-full bg-amber-600 text-white flex items-center justify-center font-mono font-bold text-xs border border-amber-700 transition-all duration-300 shadow-sm';
+        timelineText.innerText = 'B-14 Track Maintenance (45 min)';
+        propSlotTime.innerText = '14:20 – 15:05';
+        if (reviseActionBtnText) reviseActionBtnText.innerText = 'REVISE BLOCK';
+        showToast('Block B-14 reset to original 14:20 – 15:05 schedule');
+      }
+      lucide.createIcons();
+    }
+
+    function handleApproveBlock() {
+      isApproved = !isApproved;
+      const btn = document.getElementById('approveBtn');
+      const btnLabel = document.getElementById('approveBtnLabel');
+      const badge = document.getElementById('approvalBadge');
+
+      if (isApproved) {
+        btn.className = 'w-full py-2.5 bg-slate-700 text-white text-xs sm:text-sm font-bold rounded border border-slate-800 transition flex items-center justify-center gap-2';
+        btnLabel.innerText = 'BLOCK APPROVED BY CONTROLLER ✓';
+        badge.className = 'text-emerald-800 font-bold px-2.5 py-0.5 bg-emerald-100 border border-emerald-300 rounded text-xs';
+        badge.innerText = 'Approved';
+        showToast('Block B-14 officially approved by Section Controller');
+      } else {
+        btn.className = 'w-full py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white text-xs sm:text-sm font-bold rounded border border-emerald-800 transition flex items-center justify-center gap-2 shadow-sm';
+        btnLabel.innerText = 'APPROVE BLOCK';
+        badge.className = 'text-amber-800 font-bold px-2.5 py-0.5 bg-amber-100 border border-amber-300 rounded text-xs';
+        badge.innerText = 'Pending';
+        showToast('Approval status reset to Pending');
+      }
+      lucide.createIcons();
+    }
+
+    function handleReviewBlock() {
+      document.getElementById('conditionsModal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function handleViewConditions() {
+      document.getElementById('conditionsModal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeConditionsModal() {
+      document.getElementById('conditionsModal').classList.add('hidden');
+    }
+  </script>
+</body>
+</html>
