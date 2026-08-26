@@ -1,16 +1,24 @@
-# React + Vite
+# Railway Block Planning & Operations Dashboard (Frontend)
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+React + Vite + Tailwind CSS v4 railway operations interface for the **AI-Powered Automatic Block Planning System**.
 
-Currently, two official plugins are available:
+## 🚀 Running Locally
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+npm install
+npm run dev -- --port 5173
+```
 
-## React Compiler
+Access at: `http://localhost:5173/`
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Build & Verification
 
-## Expanding the Oxlint configuration
+```bash
+# Build production bundle
+npm run build
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+# Preview production build
+npm run preview
+```
+
+See root [README.md](../README.md) for full architecture, screenshots, demo walkthrough, and backend API integration details.

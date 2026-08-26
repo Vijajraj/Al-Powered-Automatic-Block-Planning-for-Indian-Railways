@@ -1,61 +1,157 @@
-# Indian Railways — Block Planning & Maintenance Management Portal
-## Ministry of Railways, Government of India (Southern Railway / Chennai Division)
+# AI-Powered Automatic Block Planning for Indian Railways
 
-### Overview
-This portal has been developed as an authentic **Indian Government / Indian Railways web application** adhering to the Guidelines for Indian Government Websites (GIGW) design standards.
-
-It features a normal, fluid, fully-responsive layout (no fixed constraints or arbitrary box sizes) with national government branding, accessibility controls, realistic train operations data, and departmental block maintenance workflows.
+> **Ministry of Railways · Southern Railway / Chennai Division**  
+> Operational Control-Room Platform for Intelligent Maintenance Block Scheduling, Conflict Detection, Safety Validation, and Real-Time Disruption Replanning.
 
 ---
 
-### Key Portal Architecture
+## 🚀 Live Localhost Access
 
-1. **Top National / Accessibility Header Bar**:
-   - Bilingual Indian Government identity: `भारत सरकार | Government of India` & `रेल मंत्रालय | Ministry of Railways`.
-   - Division (`Chennai MAS`), Shift (`Day 06:00 - 14:00`), Date (`25 Aug 2026`).
-   - Standard GIGW Accessibility buttons (`A-`, `A`, `A+`).
-   - National Tricolor Ribbon accent.
+The React operations interface is active and accessible locally:
 
-2. **Main Portal Branding & Navigation**:
-   - Title: `BLOCK PLANNING & MAINTENANCE` with `Planning Active` status badge.
-   - Subtitle: `Indian Railways • Operating & Engineering Department (Control Office, Chennai Division)`.
-   - Section Controller terminal status: `MAS-CTRL-04` (COA Link: Active).
-   - Government horizontal navigation menu (`Dashboard`, `Block Requests`, `Timetable & Position`, `Safety Approvals`, `Disruption Log`, `Reports & MIS`).
-   - Operational Notice / Ticker ribbon.
+```
+➜ Local: http://localhost:5173/
+```
 
-3. **Core Operational Metrics**:
-   - **PENDING REQUESTS:** 24
-   - **PLANNED BLOCKS:** 15
-   - **CONFLICTS:** 03
-   - **AWAITING APPROVAL:** 06
-
-4. **Maintenance Block Requests Queue**:
-   - Structured table listing active departmental requests across **Engineering (B-14)**, **TRD (B-16)**, and **S&T (B-12)** with color-coded priority and status tags.
-
-5. **Proposed Block Specification**:
-   - Highlighting Section **B-14 (Engineering - Track Maintenance)**.
-   - Recommended operational window: **14:20 – 15:05** (45 min duration, 0 train conflicts, Safety Passed, Low traffic impact).
-   - Action: `REVIEW BLOCK SPECIFICATION` (modal displaying track isolation, OHE power block, and caution order protocols).
-
-6. **Train & Block Position Timeline (Full Width)**:
-   - Synchronized timeline across **13:00 – 16:00** displaying **Train Movements** (*Train 12674 Cheran Exp*, *Train 12623 MAS-TVC Mail*, *Train 16127 Guruvayur Exp*) along with departmental maintenance blocks (**ENG**, **TRD**, **S&T**).
-
-7. **Safety & Approval Matrix**:
-   - Interlock check status (Track Availability, Train Conflict, Department Conflict, Safety Conditions).
-   - Action: `APPROVE BLOCK` (updates status to *Approved by Controller*).
-
-8. **Disruption Management & Work Overrun**:
-   - Alert: `B-14 — WORK OVERRUN` (+12 min).
-   - Slot rescheduling: `14:20 – 15:05` $\rightarrow$ `15:20 – 16:05`.
-   - Action: `REVISE BLOCK` (dynamically shifts the timeline slot).
-
-9. **Indian Government Standard Footer**:
-   - Managed by *Ministry of Railways, Government of India*.
-   - Designed & Hosted by *Centre for Railway Information Systems (CRIS)*.
-   - Division Helpdesk, System version, and GIGW compliance references.
+To run manually:
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
 ---
 
-### How to Access
+## 🎯 System Overview
 
-Open [index.html](file:///c:/projects/railway-block-planner/index.html) in any web browser (Google Chrome, Microsoft Edge, Firefox).
+Railway maintenance blocks (Engineering track renewals, TRD overhead electrical inspections, S&T signaling works) must be scheduled without disrupting dense train timetables.
+
+This system provides a **centralized railway control-room interface** that:
+1. **Consumes optimization & planning engine APIs** (`/trains`, `/maintenance`, `/plan`, `/validate`, `/disruption`).
+2. **Visualizes shared spatio-temporal constraints** across train traffic and departmental maintenance windows using an interactive **Gantt timeline**.
+3. **Detects & resolves scheduling conflicts** with clear operational justifications.
+4. **Enforces human-in-the-loop safety approvals** across 5 critical safety checks before executing blocks.
+5. **Handles real-time disruptions** (Train Delays and Maintenance Overruns) with instant **Detect ➔ Re-slot ➔ Update** replanning.
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technologies |
+|---|---|
+| **Frontend Framework** | React 19, Vite 8 |
+| **Styling & UI** | Tailwind CSS v4 (Dark Ops-Room Theme) |
+| **Icons & Visuals** | Lucide React, Custom SVG Railway Schematics & Interactive Gantt Timeline |
+| **State Management** | Zustand (Global store with reactive updates) |
+| **API Client** | Axios with seamless mock fallback for offline/live judging presentations |
+| **Routing** | React Router DOM v7 |
+
+---
+
+## 🧭 Application Structure & Pages
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│ AI BLOCK PLANNING                      SYSTEM: ONLINE       │
+├──────────────┬──────────────────────────────────────────────┤
+│ Dashboard    │ KPI CARDS (Active Sections, Trains, Blocks)  │
+│ Maintenance  │                                              │
+│ Trains       │ NETWORK / SECTION SCHEMATIC VIEW             │
+│ Block Plans  │                                              │
+│ Disruptions  │ MAINTENANCE REQUESTS QUEUE                   │
+│ Approvals    │                                              │
+│              │ BLOCK PLANNING TIMELINE (Gantt View)         │
+└──────────────┴──────────────────────────────────────────────┘
+```
+
+### 1. Dashboard (`/`)
+- **Real-Time KPIs**: Dynamic counts for Active Sections, Scheduled Trains, Maintenance Requests, and Planned Blocks.
+- **Network / Section Schematic**: Interactive line diagram (**CHENNAI ➔ KANCHIPURAM ➔ ARCOT ➔ VELLORE**). Click any section (`A-B`, `B-C`, `C-D`) to inspect track type, active train count, and maintenance demands.
+- **Maintenance Queue**: High-level preview of incoming departmental requests.
+- **Operational Timeline**: Quick-look Gantt chart of section activities.
+
+### 2. Maintenance Requests (`/maintenance`)
+- Complete data grid: `Request ID`, `Section`, `Department`, `Work Type`, `Priority`, `Duration`, `Requested Slot`, `Status`.
+- Multi-dimensional filters: **Department** (Engineering, TRD, S&T), **Priority** (Critical, High, Medium, Low), **Section** (A-B, B-C, C-D), and **Status** (Pending, Planned).
+
+### 3. Train Schedule (`/trains`)
+- Live timetable view: `Train ID`, `Train Type`, `Section`, `Arrival`, `Departure`, `Direction`, `Priority`.
+- Section filtering allowing controllers to analyze conflicting traffic slots.
+
+### 4. Block Planning (`/block-planning`) — *Core Planning Screen*
+- **`[ Generate Optimized Plan ]`**: Requests the optimal schedule from the backend.
+- **Shared Gantt Timeline**: Displays train traffic and departmental blocks competing for track access.
+- **Conflict Detection & Resolution**:
+  - Highlights overlapping slots (e.g., `M001 Engineering` vs `Train 12601` at `14:20–14:40`).
+  - `[ OPTIMIZE PLAN ]` re-slots maintenance to a feasible window (`14:45–15:45`).
+- **Safety Validation Panel**: 5-point safety checklist:
+  - `✓ Train conflict`
+  - `✓ Section conflict`
+  - `✓ Resource conflict`
+  - `✓ Power constraint (OHE)`
+  - `✓ Operating window compliance`
+  - `Overall Status: PASSED`
+- **Human Approval**: Controller clicks `[ APPROVE BLOCK PLAN ]` ➔ locks plan to `PLAN STATUS: APPROVED`.
+
+### 5. Disruption Management (`/disruptions`) — *Simulation Screen*
+- **Scenario A: Train Delay Simulation**
+  - Select train (`12601`), add delay (`+20 min`), click `[ APPLY DISRUPTION ]`.
+  - Alert: `DISRUPTION DETECTED` (Affects `M001`).
+  - Click `[ RE-PLAN ]` ➔ Block re-slotted to `15:30–16:30` (Status: `RE-SLOTTED`).
+- **Scenario B: Maintenance Overrun Simulation**
+  - Select request (`M001`), add overrun (`+30 min`), click `[ APPLY ]`.
+  - Shows actual end time `16:15` causing a conflict with downstream `M002 TRD`.
+  - Click `[ RE-PLAN ]` ➔ `M002` shifted to `16:30–17:00`.
+- **Live Re-planned Gantt**: Immediately reflects changes visually.
+
+### 6. Approvals (`/approvals`)
+- Official locked operational schedule for Section Controllers and field inspectors.
+
+---
+
+## ⚡ 2-Minute Judging Demo Flow
+
+Follow this sequence for an end-to-end demonstration:
+
+1. **Dashboard** ➔ Show KPI metrics and click on **Section A-B** in the network schematic.
+2. **Maintenance Requests** ➔ Filter by `Engineering` & `Critical` priority.
+3. **Train Schedule** ➔ Highlight train density on section `A-B`.
+4. **Block Planning**:
+   - Click **`[ Generate Optimized Plan ]`**.
+   - Review pre-optimization conflict on the timeline and conflict card (`M001` vs `Train 12601`).
+   - Click **`[ OPTIMIZE PLAN ]`** ➔ observe conflict resolved and safety validation checklist passing (`PASSED`).
+   - Click **`[ APPROVE BLOCK PLAN ]`** ➔ status updates to `APPROVED`.
+5. **Disruption Management**:
+   - Under **Simulate Train Delay**, select `Train 12601` with `+20 min` delay ➔ click **`[ APPLY DISRUPTION ]`**.
+   - Click **`[ RE-PLAN ]`** ➔ observe `M001` re-slotted to `15:30–16:30`.
+   - Under **Simulate Maintenance Overrun**, add `+30 min` to `M001` ➔ click **`[ APPLY ]`** ➔ **`[ RE-PLAN ]`**.
+   - Review updated Gantt timeline below.
+6. **Approvals** ➔ Show the finalized, controller-approved schedule.
+
+---
+
+## 🔌 Backend API Integration
+
+Configured in `frontend/src/api/client.js` with `http://localhost:8000`:
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/trains` | Fetch active train movements |
+| `GET` | `/maintenance` | Fetch maintenance work queue |
+| `POST` | `/plan` | Generate collision-free block plan |
+| `POST` | `/validate` | Execute safety validation matrix |
+| `POST` | `/disruption` | Calculate re-slotted schedule for delays/overruns |
+
+*(Includes automatic fallback to realistic mock fixtures if backend is offline)*.
+
+---
+
+## 📦 Build & Production
+
+```bash
+# Build production bundle
+npm run build
+
+# Preview build locally
+npm run preview
+```
