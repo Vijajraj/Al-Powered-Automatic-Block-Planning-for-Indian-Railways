@@ -6,22 +6,24 @@ import StatusBadge from '../components/StatusBadge';
 import GanttChart from '../components/GanttChart';
 import useAppStore from '../store/appStore';
 import { fetchTrains, fetchMaintenance } from '../api/client';
+import { getTranslation } from '../utils/translations';
 
 export default function Dashboard() {
-  const { trains, maintenance, planResult, setTrains, setMaintenance, setLoading, isLoading } = useAppStore();
+  const { trains, maintenance, planResult, setTrains, setMaintenance, setLoading, isLoading, lang } = useAppStore();
+  const t = (key) => getTranslation(lang, key);
 
   useEffect(() => {
     async function load() {
       setLoading('dashboard', true);
-      const [t, m] = await Promise.all([fetchTrains(), fetchMaintenance()]);
-      setTrains(t);
+      const [tr, m] = await Promise.all([fetchTrains(), fetchMaintenance()]);
+      setTrains(tr);
       setMaintenance(m);
       setLoading('dashboard', false);
     }
     if (!trains.length || !maintenance.length) load();
   }, []);
 
-  const sections = [...new Set([...trains.map(t => t.section), ...maintenance.map(m => m.section)])];
+  const sections = [...new Set([...trains.map(tr => tr.section), ...maintenance.map(m => m.section)])];
   const pendingMaint = maintenance.filter(m => m.status === 'Pending').length;
   const plannedBlocks = maintenance.filter(m => m.status === 'Planned').length;
 
@@ -35,14 +37,14 @@ export default function Dashboard() {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-base sm:text-lg font-extrabold text-[#0f2744] uppercase tracking-wider">
-              OPERATIONAL CONTROL DASHBOARD
+              {t('dashboard')}
             </h1>
             <span className="px-2 py-0.5 bg-slate-100 text-amber-800 border border-slate-300 text-[10px] font-mono font-bold rounded">
               ZONE: SR · DIV: MAS
             </span>
           </div>
           <p className="text-xs text-slate-600 mt-0.5 font-medium">
-            Real-time Block Planning &amp; Maintenance Management Overview · Southern Railway (Chennai Control Office)
+            {t('subTitle')}
           </p>
         </div>
         <div className="flex items-center gap-2 text-xs font-mono text-slate-700 bg-white px-3 py-1.5 rounded border border-slate-300 shadow-sm">
@@ -54,28 +56,28 @@ export default function Dashboard() {
       {/* 4 Operational KPI Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <KpiCard
-          label="Active Sections"
-          value={isLoading('dashboard') ? '…' : (sections.length || 12)}
+          label={t('kpiActiveSections')}
+          value={isLoading('dashboard') ? '…' : (sections.length || 4)}
           icon={Activity}
           color="emerald"
           sub="MAS–AJJ Core Corridor"
         />
         <KpiCard
-          label="Scheduled Trains"
+          label={t('kpiScheduledTrains')}
           value={isLoading('dashboard') ? '…' : trains.length}
           icon={Train}
           color="blue"
           sub="Active Working Timetable"
         />
         <KpiCard
-          label="Maintenance Requests"
+          label={t('kpiMaintenanceReqs')}
           value={isLoading('dashboard') ? '…' : maintenance.length}
           icon={ClipboardList}
           color="rose"
           sub={`${pendingMaint} Pending Sanction`}
         />
         <KpiCard
-          label="Planned Blocks"
+          label={t('kpiPlannedBlocks')}
           value={isLoading('dashboard') ? '…' : (plannedBlocks || plan.length)}
           icon={Calendar}
           color="amber"
@@ -96,52 +98,56 @@ export default function Dashboard() {
             <div className="px-4 py-3 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
               <span className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
                 <Layers size={14} className="text-amber-600" />
-                Departmental Maintenance Queue
+                {t('maintQueueTitle')}
               </span>
-              <span className="text-[11px] text-slate-500 font-mono font-medium">Showing {recent.length} of {maintenance.length} Active</span>
+              <span className="text-[11px] text-slate-500 font-mono">Top 5 Requests</span>
             </div>
             <div className="overflow-x-auto">
-              <table className="w-full text-xs">
-                <thead>
-                  <tr className="bg-slate-100 text-slate-700 border-b border-slate-300">
-                    {['Req ID', 'Section', 'Dept', 'Work Description', 'Priority', 'Status'].map(h => (
-                      <th key={h} className="text-left px-3.5 py-2.5 text-[10px] uppercase font-bold tracking-wider">{h}</th>
-                    ))}
+              <table className="w-full text-left text-xs">
+                <thead className="bg-slate-100 border-b border-slate-200 text-slate-600 font-mono uppercase text-[10.5px]">
+                  <tr>
+                    <th className="px-3 py-2">ID</th>
+                    <th className="px-3 py-2">Section</th>
+                    <th className="px-3 py-2">Department</th>
+                    <th className="px-3 py-2">Work Type</th>
+                    <th className="px-3 py-2">Priority</th>
+                    <th className="px-3 py-2">Status</th>
                   </tr>
                 </thead>
-                <tbody>
-                  {recent.map((m, i) => (
-                    <tr key={m.id} className={`border-b border-slate-200 ${i % 2 === 0 ? 'bg-white' : 'bg-slate-50/60'} hover:bg-amber-50/50 transition`}>
-                      <td className="px-3.5 py-2.5 font-mono font-bold text-amber-800">{m.id}</td>
-                      <td className="px-3.5 py-2.5 font-mono text-slate-800 font-semibold">{m.section}</td>
-                      <td className="px-3.5 py-2.5 text-slate-800 font-semibold">{m.department}</td>
-                      <td className="px-3.5 py-2.5 text-slate-600">{m.workType}</td>
-                      <td className="px-3.5 py-2.5"><StatusBadge status={m.priority} /></td>
-                      <td className="px-3.5 py-2.5"><StatusBadge status={m.status} /></td>
+                <tbody className="divide-y divide-slate-100">
+                  {recent.map(m => (
+                    <tr key={m.id} className="hover:bg-slate-50 font-medium">
+                      <td className="px-3 py-2 font-mono font-bold text-slate-900">{m.id}</td>
+                      <td className="px-3 py-2 font-mono text-slate-700">{m.section}</td>
+                      <td className="px-3 py-2">{m.department}</td>
+                      <td className="px-3 py-2 text-slate-700">{m.workType}</td>
+                      <td className="px-3 py-2">
+                        <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
+                          m.priority === 'Critical' ? 'bg-rose-100 text-rose-800 border border-rose-300' :
+                          m.priority === 'High' ? 'bg-amber-100 text-amber-800 border border-amber-300' :
+                          'bg-slate-100 text-slate-700 border border-slate-300'
+                        }`}>
+                          {m.priority}
+                        </span>
+                      </td>
+                      <td className="px-3 py-2">
+                        <StatusBadge status={m.status} />
+                      </td>
                     </tr>
                   ))}
-                  {!recent.length && (
-                    <tr><td colSpan={6} className="text-center py-6 text-slate-400 text-xs">Loading queue…</td></tr>
-                  )}
                 </tbody>
               </table>
             </div>
           </div>
-          <div className="px-4 py-2 border-t border-slate-200 bg-slate-50 text-[10px] text-slate-600 flex items-center justify-between font-medium">
-            <span>Priority Hierarchy: Critical ➔ High ➔ Medium ➔ Low</span>
-            <span className="text-amber-700 font-semibold">Auto-synced with PWI Logbook</span>
-          </div>
         </div>
       </div>
 
-      {/* Block Planning Timeline on Dashboard */}
-      <div>
-        <GanttChart
-          trains={trains}
-          plan={plan}
-          title="Section Spatio-Temporal Master Timeline (07:00 – 18:00)"
-        />
-      </div>
+      {/* S&T / Spatio-temporal Gantt chart view */}
+      <GanttChart
+        trains={trains}
+        plan={plan}
+        title={t('timelineTitle')}
+      />
     </div>
   );
 }

@@ -39,12 +39,70 @@ This system provides a **centralized railway control-room interface** that:
 
 | Layer | Technologies |
 |---|---|
+| **Backend Engine** | Python 3.11, FastAPI, Google OR-Tools CP-SAT, Pandas, Pydantic v2 |
+| **Optimization Solver** | Google OR-Tools CP-SAT (`ortools`) Constraint Programming Solver |
 | **Frontend Framework** | React 19, Vite 8 |
 | **Styling and UI** | Tailwind CSS v4 (Dark Ops-Room Theme) |
 | **Icons and Visuals** | Lucide React, Custom SVG Railway Schematics and Interactive Gantt Timeline |
 | **State Management** | Zustand (Global store with reactive updates) |
-| **API Client** | Axios with seamless mock fallback for offline/live judging presentations |
+| **API Client** | Axios with seamless mock fallback & live backend integration |
 | **Routing** | React Router DOM v7 |
+
+---
+
+## Backend & AI/Optimization Engine (Person 1 — Completed)
+
+The complete backend scheduling engine is built and active under `/backend`, matching the full flow: **AI Priority Engine → Work-Time Predictor → CP-SAT Optimizer → Safety & Approval Gate → Block Plan → Disruption Re-slotting**.
+
+### Core Engine Modules
+
+1. **AI Priority Engine** (`backend/app/engine/priority_engine.py`)
+   - Deterministic weighted model calculating a `0–100` score and level (`Critical`, `High`, `Medium`, `Low`) based on severity, asset criticality, urgency, and safety impact.
+2. **Work-Time Predictor** (`backend/app/engine/work_time_predictor.py`)
+   - Predicts maintenance block duration in minutes using departmental baselines, complexity multipliers, and heavy machinery setup overheads.
+3. **Conflict Detection Engine** (`backend/app/engine/conflict_detector.py`)
+   - Detects all 6 core conflict types: Train vs Maintenance, Maintenance vs Maintenance section overlap, Mobile resource contention, Power shutdown availability, Invalid operating window, and Redundant section allocations.
+4. **Google OR-Tools CP-SAT Optimizer** (`backend/app/engine/cpsat_optimizer.py`)
+   - Formulates constraint programming model with start/end decision variables, hard temporal/resource constraints, and an objective function minimizing train delay penalties and slot inefficiencies.
+5. **Safety Validation Gate** (`backend/app/engine/safety_validator.py`)
+   - 5-point safety gate checklist enforcing human-in-the-loop approvals before block publication.
+6. **Disruption Replanning Engine** (`backend/app/engine/disruption_engine.py`)
+   - Real-time **Detect → Re-slot → Update** engine handling Train Delays (`+20 min`) and Maintenance Overruns (`+30 min`).
+
+### Running the Backend
+
+#### Option A: Using `uv` (Recommended — Ultrafast)
+
+```bash
+# 1. Navigate to backend directory
+cd backend
+
+# 2. Create virtual environment & install dependencies
+uv venv --python 3.11
+uv pip install -r requirements.txt
+
+# 3. Launch FastAPI server (port 8000)
+uv run uvicorn app.main:app --port 8000 --reload
+
+# 4. Run unit tests
+uv run python tests/test_engine.py
+```
+
+#### Option B: Standard Python 3.11 & `pip`
+
+```bash
+# 1. Navigate to backend directory
+cd backend
+
+# 2. Install dependencies
+py -3.11 -m pip install -r requirements.txt
+
+# 3. Run FastAPI server (port 8000)
+py -3.11 -m uvicorn app.main:app --port 8000 --reload
+
+# 4. Run unit tests
+py -3.11 tests/test_engine.py
+```
 
 ---
 

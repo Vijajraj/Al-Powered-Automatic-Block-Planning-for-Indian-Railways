@@ -1,24 +1,47 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard, ClipboardList, Train, Calendar,
-  AlertTriangle, CheckSquare, Activity, UserCheck, Bell, Shield
+  AlertTriangle, CheckSquare, Activity, UserCheck, Bell, Shield, Languages
 } from 'lucide-react';
-
-const NAV = [
-  { to: '/',               label: 'Dashboard',            icon: LayoutDashboard },
-  { to: '/maintenance',    label: 'Maintenance Requests',  icon: ClipboardList },
-  { to: '/trains',         label: 'Train Timetable',       icon: Train },
-  { to: '/block-planning', label: 'Block Planning',       icon: Calendar },
-  { to: '/disruptions',    label: 'Disruption Log',        icon: AlertTriangle },
-  { to: '/approvals',      label: 'Safety Approvals',      icon: CheckSquare },
-];
+import useAppStore from '../store/appStore';
+import { getTranslation } from '../utils/translations';
 
 export default function Layout({ children }) {
   const [fontSize, setFontSize] = useState('normal');
-  const [lang, setLang] = useState('EN');
+  const { lang, setLang } = useAppStore();
+
+  const t = (key) => getTranslation(lang, key);
+
+  const NAV = [
+    { to: '/',               label: t('dashboard'),            icon: LayoutDashboard },
+    { to: '/maintenance',    label: t('maintenanceRequests'),  icon: ClipboardList },
+    { to: '/trains',         label: t('trainTimetable'),       icon: Train },
+    { to: '/block-planning', label: t('blockPlanning'),       icon: Calendar },
+    { to: '/disruptions',    label: t('disruptionLog'),        icon: AlertTriangle },
+    { to: '/approvals',      label: t('safetyApprovals'),      icon: CheckSquare },
+  ];
 
   const fontClass = fontSize === 'small' ? 'text-[92%]' : fontSize === 'large' ? 'text-[108%]' : '';
+
+  const handleLanguageToggle = () => {
+    const nextLang = lang === 'EN' ? 'HI' : 'EN';
+    setLang(nextLang);
+
+    const targetCode = nextLang === 'HI' ? 'hi' : 'en';
+
+    // Update Google Translate cookies
+    document.cookie = `googtrans=/en/${targetCode}; path=/; domain=${window.location.hostname}`;
+    document.cookie = `googtrans=/en/${targetCode}; path=/`;
+
+    // Trigger Google Translate dropdown element if available
+    const combo = document.querySelector('.goog-te-combo');
+    if (combo) {
+      combo.value = targetCode;
+      combo.dispatchEvent(new Event('change'));
+      combo.dispatchEvent(new Event('input'));
+    }
+  };
 
   return (
     <div className={`min-h-screen flex flex-col bg-[#f1f5f9] text-slate-900 antialiased ${fontClass}`}>
@@ -30,36 +53,38 @@ export default function Layout({ children }) {
           {/* Left: Bilingual Government Identity */}
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
-              <span className="font-semibold text-white tracking-wide">भारत सरकार</span>
+              <span className="font-semibold text-white tracking-wide">{t('bharatSarkar')}</span>
               <span className="text-slate-500">|</span>
-              <span className="font-semibold text-white tracking-wide">Government of India</span>
+              <span className="font-semibold text-white tracking-wide">{t('govOfIndia')}</span>
             </div>
             <span className="text-slate-600 hidden sm:inline">•</span>
             <div className="hidden sm:flex items-center gap-1.5 text-slate-300">
-              <span>रेल मंत्रालय</span>
+              <span>{t('railMinistryHi')}</span>
               <span className="text-slate-500">|</span>
-              <span>Ministry of Railways</span>
+              <span>{t('railMinistryEn')}</span>
             </div>
           </div>
 
           {/* Right: Operational Details & Accessibility */}
           <div className="flex items-center gap-3 text-xs">
             <div className="hidden md:flex items-center gap-1.5 bg-slate-800/90 px-2.5 py-0.5 rounded border border-slate-700">
-              <span className="text-slate-400">Division:</span>
-              <strong className="text-amber-400 font-mono">Southern Railway · Chennai (MAS)</strong>
+              <span className="text-slate-400">{t('division')}</span>
+              <strong className="text-amber-400 font-mono">{t('southernRailway')}</strong>
             </div>
 
             <div className="hidden lg:flex items-center gap-1.5 border-l border-slate-700 pl-3">
-              <span className="text-slate-400">Shift:</span>
-              <span className="text-slate-200 font-medium">Day (06:00 - 14:00)</span>
+              <span className="text-slate-400">{t('shift')}</span>
+              <span className="text-slate-200 font-medium">{t('shiftTime')}</span>
             </div>
 
-            {/* Language toggle */}
+            {/* Language toggle button */}
             <button
-              onClick={() => setLang(lang === 'EN' ? 'HI' : 'EN')}
-              className="px-2 py-0.5 bg-slate-800 hover:bg-slate-700 text-amber-400 rounded text-[11px] border border-slate-600 font-bold cursor-pointer"
+              onClick={handleLanguageToggle}
+              title="Switch Language / भाषा बदलें"
+              className="flex items-center gap-1.5 px-2.5 py-1 bg-amber-500 hover:bg-amber-400 active:bg-amber-600 text-slate-950 rounded text-xs border border-amber-600 font-black cursor-pointer shadow-sm transition uppercase tracking-wider"
             >
-              {lang === 'EN' ? 'हिन्दी' : 'English'}
+              <Languages size={13} className="text-slate-950" />
+              <span>{lang === 'EN' ? 'हिन्दी' : 'English'}</span>
             </button>
 
             {/* Accessibility font size */}
@@ -105,14 +130,14 @@ export default function Layout({ children }) {
             <div>
               <div className="flex items-center gap-2.5 flex-wrap">
                 <h1 className="text-base sm:text-lg font-extrabold text-[#0f2744] tracking-wide uppercase">
-                  AI BLOCK PLANNING &amp; MAINTENANCE MANAGEMENT
+                  {t('portalTitle')}
                 </h1>
                 <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 border border-emerald-300 text-[10.5px] font-bold rounded uppercase tracking-wider flex items-center gap-1">
-                  <Activity size={11} className="animate-pulse text-emerald-600" /> SYSTEM: ONLINE
+                  <Activity size={11} className="animate-pulse text-emerald-600" /> {t('systemStatus')}
                 </span>
               </div>
               <p className="text-xs text-slate-600 font-medium mt-0.5">
-                Indian Railways • Operating &amp; Engineering Department (Control Office, Chennai Division)
+                {t('subTitle')}
               </p>
             </div>
           </div>
@@ -120,8 +145,8 @@ export default function Layout({ children }) {
           {/* Section Controller ID badge */}
           <div className="flex items-center gap-3">
             <div className="text-right hidden sm:block">
-              <div className="text-xs font-bold text-slate-800 font-mono">Console: MAS-CTRL-04</div>
-              <div className="text-[11px] text-slate-500 font-mono">COA Integration: Active • FOIS Sync: OK</div>
+              <div className="text-xs font-bold text-slate-800 font-mono">{t('console')}</div>
+              <div className="text-[11px] text-slate-500 font-mono">{t('coaSync')}</div>
             </div>
             <div className="w-10 h-10 bg-slate-100 border border-slate-300 rounded flex items-center justify-center text-slate-700">
               <UserCheck size={20} className="text-[#0f2744]" />
@@ -154,7 +179,7 @@ export default function Layout({ children }) {
 
             <div className="hidden lg:flex items-center gap-2 text-slate-300 pr-2 text-xs font-mono">
               <Shield size={13} className="text-emerald-400" />
-              <span>Safety Interlocking: ENABLED</span>
+              <span>{t('safetyInterlock')}</span>
             </div>
           </div>
         </nav>
@@ -165,10 +190,10 @@ export default function Layout({ children }) {
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-2.5">
             <span className="px-2 py-0.5 bg-amber-600 text-white font-bold text-[10px] rounded uppercase tracking-wider flex items-center gap-1">
-              <Bell size={10} /> NOTICE
+              <Bell size={10} /> {t('notice')}
             </span>
             <span className="text-slate-800 font-medium text-xs">
-              Section A-B (Chennai – Kanchipuram) track renewal maintenance blocks scheduled. Preceding caution orders synchronized with COA portal.
+              {t('noticeText')}
             </span>
           </div>
           <span className="text-[11px] font-mono text-amber-800 font-semibold hidden md:inline">
@@ -177,7 +202,7 @@ export default function Layout({ children }) {
         </div>
       </div>
 
-      {/* ── 6. MAIN WORKSPACE CONTENT (White / Light) ───────────────────────── */}
+      {/* ── 6. MAIN WORKSPACE CONTENT ───────────────────────────────────────── */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full space-y-6">
         {children}
       </main>
@@ -188,17 +213,17 @@ export default function Layout({ children }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-3">
           <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-700 pb-4">
             <div>
-              <div className="font-bold text-white text-sm">Ministry of Railways, Government of India</div>
-              <div className="text-xs text-slate-400 mt-0.5">Southern Railway Zone • Chennai Division Control Office</div>
+              <div className="font-bold text-white text-sm">{t('footerGov')}</div>
+              <div className="text-xs text-slate-400 mt-0.5">{t('footerSub')}</div>
             </div>
             <div className="text-right text-xs">
-              <div className="text-slate-300 font-medium">Designed, Developed &amp; Hosted by</div>
-              <div className="text-amber-400 font-bold">Centre for Railway Information Systems (CRIS)</div>
+              <div className="text-slate-300 font-medium">{t('footerHost')}</div>
+              <div className="text-amber-400 font-bold">{t('footerCris')}</div>
             </div>
           </div>
           <div className="flex flex-wrap items-center justify-between text-[11px] text-slate-400 gap-2">
             <div>
-              © 2026 Indian Railways. All Rights Reserved. Adheres to Guidelines for Indian Government Websites (GIGW 3.0).
+              {t('footerRights')}
             </div>
             <div className="flex items-center gap-3">
               <span>Security Audited: STQC Certified</span>

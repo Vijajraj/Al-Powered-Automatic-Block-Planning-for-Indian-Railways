@@ -7,6 +7,8 @@ import StatusBadge from '../components/StatusBadge';
 import useAppStore from '../store/appStore';
 import { fetchTrains, fetchMaintenance, generatePlan } from '../api/client';
 
+import { getTranslation } from '../utils/translations';
+
 const INFRASTRUCTURE = {
   sections: ['A-B', 'B-C', 'C-D'],
   trackType: { 'A-B': 'double', 'B-C': 'single', 'C-D': 'single' },
@@ -17,17 +19,18 @@ export default function BlockPlanningPage() {
     trains, maintenance, planResult, planGenerated, conflictResolved,
     planApproved, setTrains, setMaintenance, setPlanResult,
     setApprovedPlan, setConflictResolved, setSafetyPassed, safetyPassed,
-    setLoading, isLoading,
+    setLoading, isLoading, lang,
   } = useAppStore();
 
+  const t = (key) => getTranslation(lang, key);
   const [optimizing, setOptimizing] = useState(false);
 
   // Load data if needed
   useEffect(() => {
     async function load() {
       setLoading('bp', true);
-      const [t, m] = await Promise.all([fetchTrains(), fetchMaintenance()]);
-      setTrains(t);
+      const [tr, m] = await Promise.all([fetchTrains(), fetchMaintenance()]);
+      setTrains(tr);
       setMaintenance(m);
       setLoading('bp', false);
     }
@@ -69,14 +72,14 @@ export default function BlockPlanningPage() {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-base sm:text-lg font-extrabold text-[#0f2744] uppercase tracking-wider">
-              AUTOMATIC BLOCK PLANNING &amp; TIMELINE SCHEDULER
+              {t('bpPageTitle')}
             </h1>
             <span className="px-2 py-0.5 bg-slate-100 text-amber-800 border border-slate-300 text-[10px] font-mono font-bold rounded">
               CONTROL CONSOLE MVP
             </span>
           </div>
           <p className="text-xs text-slate-600 mt-0.5 font-medium">
-            AI-assisted collision-free slot allocation for Engineering, TRD, and S&amp;T maintenance blocks
+            {t('bpPageSub')}
           </p>
         </div>
         <button
@@ -85,7 +88,7 @@ export default function BlockPlanningPage() {
           className="flex items-center gap-2 px-5 py-2.5 bg-amber-500 hover:bg-amber-400 disabled:opacity-60 text-slate-950 text-xs font-extrabold rounded border border-amber-600 shadow-sm transition uppercase tracking-wider cursor-pointer"
         >
           <Zap size={15} />
-          {isLoading('generate') ? 'Computing Schedule…' : 'Generate Optimized Plan'}
+          {isLoading('generate') ? t('computingSchedule') : t('generatePlan')}
         </button>
       </div>
 

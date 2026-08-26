@@ -9,6 +9,7 @@ const useAppStore = create((set, get) => ({
   disruptionResult: null,
 
   // ── UI state ───────────────────────────────────────────────────
+  lang: 'EN',
   loading: {},
   planGenerated: false,
   conflictResolved: false,
@@ -16,6 +17,7 @@ const useAppStore = create((set, get) => ({
   planApproved: false,
 
   // ── Setters ────────────────────────────────────────────────────
+  setLang: (lang) => set({ lang }),
   setTrains: (trains) => set({ trains }),
   setMaintenance: (maintenance) => set({ maintenance }),
   setPlanResult: (planResult) => set({ planResult, planGenerated: true }),

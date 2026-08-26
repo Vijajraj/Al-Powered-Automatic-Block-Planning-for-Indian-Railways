@@ -1,9 +1,11 @@
 import { CheckCircle2, Clock, ShieldCheck, Printer, FileText } from 'lucide-react';
 import StatusBadge from '../components/StatusBadge';
 import useAppStore from '../store/appStore';
+import { getTranslation } from '../utils/translations';
 
 export default function ApprovalsPage() {
-  const { planApproved, planResult } = useAppStore();
+  const { planApproved, planResult, lang } = useAppStore();
+  const t = (key) => getTranslation(lang, key);
   const plan = planResult?.optimized_plan || [];
 
   return (
@@ -13,14 +15,14 @@ export default function ApprovalsPage() {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-base sm:text-lg font-extrabold text-[#0f2744] uppercase tracking-wider">
-              OFFICIALLY SANCTIONED BLOCK ORDERS &amp; CONTROLLER LOG
+              {t('appPageTitle')}
             </h1>
             <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 border border-emerald-300 text-[10px] font-mono font-bold rounded">
               FORM: IR-OPTG-BLK-SANCTION
             </span>
           </div>
           <p className="text-xs text-slate-600 mt-0.5 font-medium">
-            Final approved block plan for operational execution — authenticated by Section Controller (Chennai Control Office)
+            {t('appPageSub')}
           </p>
         </div>
         {planApproved && (

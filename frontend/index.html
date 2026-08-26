@@ -4,10 +4,29 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>railway-block-planner-react</title>
+    <title>AI Block Planning — Indian Railways</title>
+    <style>
+      .goog-te-banner-frame { display: none !important; }
+      body { top: 0px !important; position: static !important; }
+      #google_translate_element, .goog-te-gadget { display: none !important; }
+      .skiptranslate { display: none !important; }
+      iframe.skiptranslate { display: none !important; }
+    </style>
   </head>
   <body>
+    <div id="google_translate_element" style="display:none;"></div>
     <div id="root"></div>
+
+    <script type="text/javascript">
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+          pageLanguage: 'en',
+          includedLanguages: 'en,hi',
+          autoDisplay: false
+        }, 'google_translate_element');
+      }
+    </script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

@@ -3,6 +3,7 @@ import { Filter, RotateCcw, ClipboardList, ShieldAlert } from 'lucide-react';
 import StatusBadge from '../components/StatusBadge';
 import useAppStore from '../store/appStore';
 import { fetchMaintenance } from '../api/client';
+import { getTranslation } from '../utils/translations';
 
 const DEPTS = ['All', 'Engineering', 'TRD', 'S&T'];
 const PRIORITIES = ['All', 'Critical', 'High', 'Medium', 'Low'];
@@ -10,7 +11,8 @@ const SECTIONS = ['All', 'A-B', 'B-C', 'C-D'];
 const STATUSES = ['All', 'Pending', 'Planned'];
 
 export default function MaintenancePage() {
-  const { maintenance, setMaintenance, setLoading, isLoading } = useAppStore();
+  const { maintenance, setMaintenance, setLoading, isLoading, lang } = useAppStore();
+  const t = (key) => getTranslation(lang, key);
   const [dept, setDept] = useState('All');
   const [priority, setPriority] = useState('All');
   const [section, setSection] = useState('All');
@@ -40,14 +42,14 @@ export default function MaintenancePage() {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-base sm:text-lg font-extrabold text-[#0f2744] uppercase tracking-wider">
-              DEPARTMENTAL MAINTENANCE REQUESTS QUEUE
+              {t('maintPageTitle')}
             </h1>
             <span className="px-2 py-0.5 bg-slate-100 text-amber-800 border border-slate-300 text-[10px] font-mono font-bold rounded">
               FORM: IR-ENGG-BLK-01
             </span>
           </div>
           <p className="text-xs text-slate-600 mt-0.5 font-medium">
-            Civil Engineering, Electrical (TRD 25kV OHE), and Signal &amp; Telecom (S&amp;T) block sanction intake register
+            {t('maintPageSub')}
           </p>
         </div>
         <div className="text-xs font-mono text-slate-800 bg-white px-3 py-1.5 rounded border border-slate-300 shadow-sm font-semibold">

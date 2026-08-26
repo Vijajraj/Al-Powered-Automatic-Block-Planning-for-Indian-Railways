@@ -3,11 +3,13 @@ import { Filter, Train, Info } from 'lucide-react';
 import StatusBadge from '../components/StatusBadge';
 import useAppStore from '../store/appStore';
 import { fetchTrains } from '../api/client';
+import { getTranslation } from '../utils/translations';
 
 const SECTIONS = ['All', 'A-B', 'B-C', 'C-D'];
 
 export default function TrainsPage() {
-  const { trains, setTrains, setLoading, isLoading } = useAppStore();
+  const { trains, setTrains, setLoading, isLoading, lang } = useAppStore();
+  const t = (key) => getTranslation(lang, key);
   const [section, setSection] = useState('All');
 
   useEffect(() => {
@@ -29,14 +31,14 @@ export default function TrainsPage() {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-base sm:text-lg font-extrabold text-[#0f2744] uppercase tracking-wider">
-              TRAIN WORKING TIMETABLE &amp; TRAFFIC DENSITY
+              {t('trainsPageTitle')}
             </h1>
             <span className="px-2 py-0.5 bg-sky-100 text-sky-800 border border-sky-300 text-[10px] font-mono font-bold rounded">
               SOURCE: CONTROL OFFICE AUTOMATION (COA)
             </span>
           </div>
           <p className="text-xs text-slate-600 mt-0.5 font-medium">
-            Active scheduled train movements — baseline traffic constraints that block planning must work around
+            {t('trainsPageSub')}
           </p>
         </div>
         <div className="text-xs font-mono text-slate-800 bg-white px-3 py-1.5 rounded border border-slate-300 shadow-sm font-semibold">

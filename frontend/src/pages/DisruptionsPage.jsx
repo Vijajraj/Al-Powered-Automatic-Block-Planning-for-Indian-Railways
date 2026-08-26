@@ -4,9 +4,11 @@ import GanttChart from '../components/GanttChart';
 import StatusBadge from '../components/StatusBadge';
 import useAppStore from '../store/appStore';
 import { fetchTrains, fetchMaintenance, applyDisruption } from '../api/client';
+import { getTranslation } from '../utils/translations';
 
 export default function DisruptionsPage() {
-  const { trains, maintenance, setTrains, setMaintenance, setLoading } = useAppStore();
+  const { trains, maintenance, setTrains, setMaintenance, setLoading, lang } = useAppStore();
+  const t = (key) => getTranslation(lang, key);
 
   // Delay simulation state
   const [delayTrain, setDelayTrain] = useState('');
@@ -80,14 +82,14 @@ export default function DisruptionsPage() {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-base sm:text-lg font-extrabold text-[#0f2744] uppercase tracking-wider">
-              REAL-TIME DISRUPTION RECOVERY &amp; RE-PLANNING CONSOLE
+              {t('disPageTitle')}
             </h1>
             <span className="px-2 py-0.5 bg-slate-100 text-amber-800 border border-slate-300 text-[10px] font-mono font-bold rounded">
               MODULE: DETECT ➔ RE-SLOT ➔ UPDATE
             </span>
           </div>
           <p className="text-xs text-slate-600 mt-0.5 font-medium">
-            Operational disturbance simulation: Train Traffic Delays &amp; Maintenance Execution Overruns
+            {t('disPageSub')}
           </p>
         </div>
         <span className="text-xs font-mono text-slate-700 bg-white px-3 py-1 rounded border border-slate-300 shadow-sm font-semibold">
