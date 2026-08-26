@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { AlertTriangle, Clock, Wrench, ArrowRight, RefreshCw } from 'lucide-react';
+import { AlertTriangle, Clock, Wrench, ArrowRight, RefreshCw, ShieldAlert, CheckCircle2 } from 'lucide-react';
 import GanttChart from '../components/GanttChart';
 import StatusBadge from '../components/StatusBadge';
 import useAppStore from '../store/appStore';
@@ -75,103 +75,128 @@ export default function DisruptionsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="border-b border-[#334155] pb-3">
-        <h1 className="text-lg font-bold text-slate-100 uppercase tracking-wide">Disruption Management</h1>
-        <p className="text-xs text-slate-500 mt-0.5">Simulate real-world disruptions and demonstrate Detect → Re-slot → Update flow</p>
+      {/* Official Header */}
+      <div className="border-b border-[#203a5c] pb-3 flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <div className="flex items-center gap-2">
+            <h1 className="text-base font-extrabold text-white uppercase tracking-wider">
+              REAL-TIME DISRUPTION RECOVERY &amp; RE-PLANNING CONSOLE
+            </h1>
+            <span className="px-2 py-0.5 bg-[#0b1a2d] text-amber-400 border border-[#203a5c] text-[10px] font-mono font-bold rounded">
+              MODULE: DETECT ➔ RE-SLOT ➔ UPDATE
+            </span>
+          </div>
+          <p className="text-xs text-slate-400 mt-0.5">
+            Operational disturbance simulation: Train Traffic Delays &amp; Maintenance Execution Overruns
+          </p>
+        </div>
+        <span className="text-xs font-mono text-slate-400 bg-[#0b1a2d] px-3 py-1 rounded border border-[#203a5c]">
+          Live Controller Console: MAS-CTRL-04
+        </span>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
 
         {/* ── SECTION 1: Train Delay ───────────────────────────── */}
-        <div className="bg-[#1e293b] border border-[#334155] rounded p-5 space-y-4">
-          <div className="flex items-center gap-2 border-b border-[#334155] pb-3">
-            <Clock size={14} className="text-amber-400" />
-            <span className="text-xs font-bold uppercase tracking-widest text-slate-300">Simulate Train Delay</span>
+        <div className="gov-card p-5 space-y-4 border-t-4 border-t-amber-500">
+          <div className="flex items-center justify-between border-b border-[#203a5c] pb-3">
+            <div className="flex items-center gap-2">
+              <Clock size={16} className="text-amber-400" />
+              <span className="text-xs font-extrabold uppercase tracking-wider text-slate-200">
+                SCENARIO 1: SIMULATE TRAIN TRAFFIC DELAY
+              </span>
+            </div>
+            <span className="text-[10px] font-mono text-slate-400 bg-[#081526] px-2 py-0.5 rounded border border-[#203a5c]">COA Ingress</span>
           </div>
 
           {/* Input controls */}
           <div className="space-y-3 text-xs">
             <label className="block">
-              <span className="text-slate-500 font-semibold uppercase text-[10px] tracking-wider">Select Train</span>
+              <span className="text-slate-400 font-bold uppercase text-[10px] tracking-wider">SELECT TRAIN IN CORRIDOR</span>
               <select
                 value={delayTrain}
                 onChange={e => setDelayTrain(e.target.value)}
-                className="mt-1 w-full bg-[#0f172a] border border-[#334155] text-slate-200 text-xs rounded px-2 py-1.5 focus:outline-none focus:border-amber-500"
+                className="mt-1 w-full bg-[#081526] border border-[#203a5c] text-slate-200 text-xs rounded px-2.5 py-2 focus:outline-none focus:border-amber-500 font-medium"
               >
-                {trains.map(t => <option key={t.id} value={t.id}>{t.name} ({t.section})</option>)}
+                {trains.map(t => <option key={t.id} value={t.id}>{t.name} — {t.section} ({t.type})</option>)}
               </select>
             </label>
 
             <label className="block">
-              <span className="text-slate-500 font-semibold uppercase text-[10px] tracking-wider">
-                Delay: <span className="text-amber-400 font-mono">+{delayMins} minutes</span>
-              </span>
+              <div className="flex justify-between items-center text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                <span>INCURRED DELAY QUANTUM:</span>
+                <span className="text-amber-400 font-mono text-xs">+{delayMins} minutes</span>
+              </div>
               <input
                 type="range" min={5} max={60} step={5}
                 value={delayMins}
                 onChange={e => setDelayMins(+e.target.value)}
-                className="mt-1 w-full accent-amber-500"
+                className="mt-1.5 w-full accent-amber-500 cursor-pointer"
               />
-              <div className="flex justify-between text-[9px] text-slate-600 mt-0.5">
-                <span>5 min</span><span>60 min</span>
+              <div className="flex justify-between text-[9px] text-slate-500 font-mono mt-0.5">
+                <span>+5 min (Minor)</span>
+                <span>+30 min (Medium)</span>
+                <span>+60 min (Major)</span>
               </div>
             </label>
 
             <button
               onClick={handleApplyDelay}
-              className="w-full py-2 bg-amber-600 hover:bg-amber-500 text-slate-900 font-bold rounded transition flex items-center justify-center gap-1.5"
+              className="w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-extrabold rounded transition flex items-center justify-center gap-1.5 shadow-sm uppercase tracking-wider cursor-pointer"
             >
-              <AlertTriangle size={13} /> APPLY DISRUPTION
+              <AlertTriangle size={14} /> APPLY DISRUPTION
             </button>
           </div>
 
           {/* After applying */}
           {delayApplied && !delayResult && (
-            <div className="rounded border border-rose-700 bg-rose-950/40 p-3 space-y-3">
-              <div className="font-bold text-rose-400 text-xs flex items-center gap-1.5">
-                <AlertTriangle size={13} /> DISRUPTION DETECTED
+            <div className="rounded border border-rose-700 bg-rose-950/50 p-3.5 space-y-3">
+              <div className="font-extrabold text-rose-400 text-xs flex items-center gap-1.5 uppercase tracking-wider">
+                <AlertTriangle size={15} /> DISRUPTION DETECTED — OVERLAPPING SANCTIONED BLOCK
               </div>
-              <div className="text-xs space-y-1">
+              <div className="text-xs space-y-1.5 bg-[#102136] p-2.5 rounded border border-rose-900/60">
                 <div className="flex justify-between">
-                  <span className="text-slate-500">Affected Block:</span>
-                  <span className="text-rose-300 font-mono font-bold">M001</span>
+                  <span className="text-slate-400">Affected Block ID:</span>
+                  <span className="text-rose-300 font-mono font-extrabold">M001 (Engineering Track Renewal)</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-500">Conflict:</span>
-                  <span className="text-rose-400 font-bold">YES</span>
+                  <span className="text-slate-400">Conflict Detected:</span>
+                  <span className="text-rose-400 font-bold font-mono">YES — DIRECT SECTION OCCUPANCY</span>
                 </div>
-                <div className="text-slate-500 text-[10px]">
-                  {selectedTrain?.name} delayed +{delayMins} min → overlaps Engineering block M001 on {selectedTrain?.section}
+                <div className="text-slate-400 text-[11px] pt-1 border-t border-[#203a5c]">
+                  {selectedTrain?.name} delayed by +{delayMins} min into previously cleared slot on {selectedTrain?.section}.
                 </div>
               </div>
               <button
                 onClick={handleReplanDelay}
                 disabled={replanning}
-                className="w-full py-1.5 bg-blue-700 hover:bg-blue-600 disabled:opacity-50 text-white text-xs font-bold rounded transition flex items-center justify-center gap-1.5"
+                className="w-full py-2 bg-sky-600 hover:bg-sky-500 disabled:opacity-50 text-white text-xs font-extrabold rounded transition flex items-center justify-center gap-1.5 shadow-sm uppercase tracking-wider cursor-pointer"
               >
-                <RefreshCw size={12} className={replanning ? 'animate-spin' : ''} />
-                {replanning ? 'Re-planning…' : 'RE-PLAN'}
+                <RefreshCw size={13} className={replanning ? 'animate-spin' : ''} />
+                {replanning ? 'Re-calculating Optimal Slot…' : 'RE-PLAN BLOCK SCHEDULE'}
               </button>
             </div>
           )}
 
           {/* After replanning */}
           {delayResult && (
-            <div className="rounded border border-blue-700 bg-blue-950/30 p-3 space-y-2">
-              <div className="font-bold text-blue-400 text-xs">RE-PLAN RESULT</div>
-              <div className="grid grid-cols-3 gap-2 text-center text-[10px]">
-                <div className="bg-[#1e293b] rounded p-2 border border-[#334155]">
-                  <div className="text-slate-500 uppercase font-bold">Original</div>
-                  <div className="font-mono text-slate-300 font-bold mt-1">{delayResult.original_slot}</div>
+            <div className="rounded border border-sky-600/70 bg-sky-950/40 p-3.5 space-y-2.5">
+              <div className="font-extrabold text-sky-300 text-xs flex items-center gap-1.5 uppercase tracking-wider">
+                <CheckCircle2 size={15} className="text-sky-400" /> RE-SLOTTED OPERATIONAL WINDOW
+              </div>
+              <div className="grid grid-cols-3 gap-2 text-center text-xs">
+                <div className="bg-[#0b1a2d] rounded p-2 border border-[#203a5c]">
+                  <div className="text-slate-400 uppercase text-[9px] font-bold">Original Slot</div>
+                  <div className="font-mono text-slate-300 font-bold mt-1 text-[11px]">{delayResult.original_slot}</div>
                 </div>
-                <div className="flex items-center justify-center"><ArrowRight size={14} className="text-slate-500" /></div>
-                <div className="bg-[#1e293b] rounded p-2 border border-blue-700">
-                  <div className="text-slate-500 uppercase font-bold">Updated</div>
-                  <div className="font-mono text-blue-300 font-bold mt-1">{delayResult.updated_plan?.[0]?.start}–{delayResult.updated_plan?.[0]?.end}</div>
+                <div className="flex items-center justify-center text-slate-500"><ArrowRight size={16} /></div>
+                <div className="bg-[#0b1a2d] rounded p-2 border border-sky-600">
+                  <div className="text-sky-400 uppercase text-[9px] font-bold">Updated Slot</div>
+                  <div className="font-mono text-sky-300 font-bold mt-1 text-[11px]">{delayResult.updated_plan?.[0]?.start}–{delayResult.updated_plan?.[0]?.end}</div>
                 </div>
               </div>
-              <div className="flex justify-between items-center pt-1 border-t border-[#334155]">
-                <span className="text-xs text-slate-500">Status:</span>
+              <div className="flex justify-between items-center pt-2 border-t border-[#203a5c]">
+                <span className="text-xs text-slate-400">Re-plan Feasibility:</span>
                 <StatusBadge status="Re-slotted" />
               </div>
             </div>
@@ -179,61 +204,67 @@ export default function DisruptionsPage() {
         </div>
 
         {/* ── SECTION 2: Maintenance Overrun ──────────────────── */}
-        <div className="bg-[#1e293b] border border-[#334155] rounded p-5 space-y-4">
-          <div className="flex items-center gap-2 border-b border-[#334155] pb-3">
-            <Wrench size={14} className="text-violet-400" />
-            <span className="text-xs font-bold uppercase tracking-widest text-slate-300">Simulate Maintenance Overrun</span>
+        <div className="gov-card p-5 space-y-4 border-t-4 border-t-violet-500">
+          <div className="flex items-center justify-between border-b border-[#203a5c] pb-3">
+            <div className="flex items-center gap-2">
+              <Wrench size={16} className="text-violet-400" />
+              <span className="text-xs font-extrabold uppercase tracking-wider text-slate-200">
+                SCENARIO 2: SIMULATE WORK EXECUTION OVERRUN
+              </span>
+            </div>
+            <span className="text-[10px] font-mono text-slate-400 bg-[#081526] px-2 py-0.5 rounded border border-[#203a5c]">Field Unit Notice</span>
           </div>
 
           <div className="space-y-3 text-xs">
             <label className="block">
-              <span className="text-slate-500 font-semibold uppercase text-[10px] tracking-wider">Select Request</span>
+              <span className="text-slate-400 font-bold uppercase text-[10px] tracking-wider">SELECT ACTIVE WORK BLOCK</span>
               <select
                 value={overrunReq}
                 onChange={e => setOverrunReq(e.target.value)}
-                className="mt-1 w-full bg-[#0f172a] border border-[#334155] text-slate-200 text-xs rounded px-2 py-1.5 focus:outline-none focus:border-amber-500"
+                className="mt-1 w-full bg-[#081526] border border-[#203a5c] text-slate-200 text-xs rounded px-2.5 py-2 focus:outline-none focus:border-violet-500 font-medium"
               >
-                {maintenance.map(m => <option key={m.id} value={m.id}>{m.id} — {m.department} ({m.section})</option>)}
+                {maintenance.map(m => <option key={m.id} value={m.id}>{m.id} — {m.department} ({m.section} · {m.workType})</option>)}
               </select>
             </label>
 
             <label className="block">
-              <span className="text-slate-500 font-semibold uppercase text-[10px] tracking-wider">
-                Additional Time: <span className="text-violet-400 font-mono">+{overrunMins} minutes</span>
-              </span>
+              <div className="flex justify-between items-center text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                <span>ADDITIONAL WORK TIME REQUIRED:</span>
+                <span className="text-violet-400 font-mono text-xs">+{overrunMins} minutes</span>
+              </div>
               <input
                 type="range" min={10} max={60} step={5}
                 value={overrunMins}
                 onChange={e => setOverrunMins(+e.target.value)}
-                className="mt-1 w-full accent-violet-500"
+                className="mt-1.5 w-full accent-violet-500 cursor-pointer"
               />
-              <div className="flex justify-between text-[9px] text-slate-600 mt-0.5">
-                <span>10 min</span><span>60 min</span>
+              <div className="flex justify-between text-[9px] text-slate-500 font-mono mt-0.5">
+                <span>+10 min (Minor)</span>
+                <span>+30 min (Medium)</span>
+                <span>+60 min (Major)</span>
               </div>
             </label>
 
             <button
               onClick={handleApplyOverrun}
-              className="w-full py-2 bg-violet-700 hover:bg-violet-600 text-white font-bold rounded transition flex items-center justify-center gap-1.5"
+              className="w-full py-2.5 bg-violet-600 hover:bg-violet-500 text-white text-xs font-extrabold rounded transition flex items-center justify-center gap-1.5 shadow-sm uppercase tracking-wider cursor-pointer"
             >
-              <Wrench size={13} /> APPLY
+              <Wrench size={14} /> APPLY WORK OVERRUN
             </button>
           </div>
 
           {/* After applying overrun */}
           {overrunApplied && !overrunResult && (
-            <div className="rounded border border-rose-700 bg-rose-950/40 p-3 space-y-3">
-              <div className="grid grid-cols-2 gap-2 text-[10px]">
-                <div className="bg-[#1e293b] p-2 rounded border border-[#334155]">
-                  <div className="text-slate-500 uppercase font-bold">Original</div>
-                  <div className="font-mono text-slate-300 mt-1">14:45–15:45</div>
+            <div className="rounded border border-rose-700 bg-rose-950/50 p-3.5 space-y-3">
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <div className="bg-[#0b1a2d] p-2 rounded border border-[#203a5c]">
+                  <div className="text-slate-400 uppercase text-[9px] font-bold">Sanctioned Slot</div>
+                  <div className="font-mono text-slate-300 font-bold mt-0.5">14:45–15:45</div>
                 </div>
-                <div className="bg-rose-950/60 p-2 rounded border border-rose-700">
-                  <div className="text-slate-500 uppercase font-bold">Actual End</div>
-                  <div className="font-mono text-rose-300 font-bold mt-1">
-                    {/* Compute actual end from overrun */}
+                <div className="bg-rose-950/80 p-2 rounded border border-rose-700">
+                  <div className="text-rose-300 uppercase text-[9px] font-bold">Actual Projected End</div>
+                  <div className="font-mono text-rose-300 font-extrabold mt-0.5">
                     {(() => {
-                      const base = 45 + 60; // 15:45 = 945 min
                       const extra = 945 + overrunMins;
                       const h = Math.floor(extra / 60);
                       const m = extra % 60;
@@ -242,39 +273,43 @@ export default function DisruptionsPage() {
                   </div>
                 </div>
               </div>
-              <div className="font-bold text-rose-400 text-xs flex items-center gap-1.5">
-                <AlertTriangle size={13} /> CONFLICT DETECTED — Downstream train affected
+              <div className="font-extrabold text-rose-400 text-xs flex items-center gap-1.5 uppercase tracking-wider">
+                <AlertTriangle size={15} /> CONFLICT DETECTED — DOWNSTREAM TRD BLOCK M002 IMPACTED
               </div>
               <button
                 onClick={handleReplanOverrun}
                 disabled={overrunReplanning}
-                className="w-full py-1.5 bg-blue-700 hover:bg-blue-600 disabled:opacity-50 text-white text-xs font-bold rounded transition flex items-center justify-center gap-1.5"
+                className="w-full py-2 bg-sky-600 hover:bg-sky-500 disabled:opacity-50 text-white text-xs font-extrabold rounded transition flex items-center justify-center gap-1.5 shadow-sm uppercase tracking-wider cursor-pointer"
               >
-                <RefreshCw size={12} className={overrunReplanning ? 'animate-spin' : ''} />
-                {overrunReplanning ? 'Re-planning…' : 'RE-PLAN'}
+                <RefreshCw size={13} className={overrunReplanning ? 'animate-spin' : ''} />
+                {overrunReplanning ? 'Re-slotting Downstream Requests…' : 'RE-PLAN DOWNSTREAM BLOCKS'}
               </button>
             </div>
           )}
 
           {/* After overrun replan */}
           {overrunResult && (
-            <div className="rounded border border-blue-700 bg-blue-950/30 p-3 space-y-2">
-              <div className="font-bold text-blue-400 text-xs">UPDATED PLAN</div>
-              <table className="w-full text-[10px]">
+            <div className="rounded border border-sky-600/70 bg-sky-950/40 p-3.5 space-y-2">
+              <div className="font-extrabold text-sky-300 text-xs flex items-center gap-1.5 uppercase tracking-wider">
+                <CheckCircle2 size={15} className="text-sky-400" /> RE-PLANNED MASTER SCHEDULE
+              </div>
+              <table className="w-full text-xs">
                 <thead>
-                  <tr className="border-b border-[#334155]">
-                    {['Block', 'Dept', 'New Start', 'New End', 'Status'].map(h => (
-                      <th key={h} className="text-left py-1 text-slate-500 font-bold uppercase">{h}</th>
-                    ))}
+                  <tr className="border-b border-[#203a5c] text-slate-400 text-[10px] uppercase font-bold">
+                    <th className="text-left py-1">Block</th>
+                    <th className="text-left py-1">Dept</th>
+                    <th className="text-left py-1">New Start</th>
+                    <th className="text-left py-1">New End</th>
+                    <th className="text-left py-1">Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   {overrunResult.updated_plan?.map(p => (
-                    <tr key={p.id} className="border-b border-[#263348]">
+                    <tr key={p.id} className="border-b border-[#182e49]">
                       <td className="py-1.5 font-mono font-bold text-amber-400">{p.id}</td>
-                      <td className="py-1.5 text-slate-400">{p.department}</td>
-                      <td className="py-1.5 font-mono text-emerald-400">{p.start}</td>
-                      <td className="py-1.5 font-mono text-rose-400">{p.end}</td>
+                      <td className="py-1.5 text-slate-300">{p.department}</td>
+                      <td className="py-1.5 font-mono text-emerald-400 font-bold">{p.start}</td>
+                      <td className="py-1.5 font-mono text-rose-400 font-bold">{p.end}</td>
                       <td className="py-1.5"><StatusBadge status={p.status} /></td>
                     </tr>
                   ))}
@@ -290,7 +325,7 @@ export default function DisruptionsPage() {
         <GanttChart
           trains={trains}
           plan={(delayResult?.updated_plan || overrunResult?.updated_plan || [])}
-          title="Updated Block Timeline — Post Re-plan"
+          title="Updated Master Block Timeline — Post Dynamic Re-Planning"
         />
       )}
     </div>

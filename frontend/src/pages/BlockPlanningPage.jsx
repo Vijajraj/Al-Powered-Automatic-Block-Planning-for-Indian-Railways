@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Zap, CheckCircle2 } from 'lucide-react';
+import { Zap, CheckCircle2, ShieldCheck, FileCheck, Layers } from 'lucide-react';
 import GanttChart from '../components/GanttChart';
 import ConflictPanel from '../components/ConflictPanel';
 import SafetyPanel from '../components/SafetyPanel';
@@ -64,19 +64,28 @@ export default function BlockPlanningPage() {
 
   return (
     <div className="space-y-5">
-      {/* Header */}
-      <div className="border-b border-[#334155] pb-3 flex items-center justify-between">
+      {/* Official Header */}
+      <div className="border-b border-[#203a5c] pb-3 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-lg font-bold text-slate-100 uppercase tracking-wide">Block Planning</h1>
-          <p className="text-xs text-slate-500 mt-0.5">Generate, review, and approve optimized maintenance block plans</p>
+          <div className="flex items-center gap-2">
+            <h1 className="text-base font-extrabold text-white uppercase tracking-wider">
+              AUTOMATIC BLOCK PLANNING &amp; TIMELINE SCHEDULER
+            </h1>
+            <span className="px-2 py-0.5 bg-[#0b1a2d] text-amber-400 border border-[#203a5c] text-[10px] font-mono font-bold rounded">
+              CONTROL CONSOLE MVP
+            </span>
+          </div>
+          <p className="text-xs text-slate-400 mt-0.5">
+            AI-assisted collision-free slot allocation for Engineering, TRD, and S&amp;T maintenance blocks
+          </p>
         </div>
         <button
           onClick={handleGenerate}
           disabled={isLoading('generate')}
-          className="flex items-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-400 disabled:opacity-60 text-slate-900 text-sm font-bold rounded border border-amber-600 transition"
+          className="flex items-center gap-2 px-5 py-2.5 bg-amber-500 hover:bg-amber-400 disabled:opacity-60 text-slate-950 text-xs font-extrabold rounded border border-amber-600 shadow-sm transition uppercase tracking-wider cursor-pointer"
         >
-          <Zap size={14} />
-          {isLoading('generate') ? 'Generating…' : 'Generate Optimized Plan'}
+          <Zap size={15} />
+          {isLoading('generate') ? 'Computing Schedule…' : 'Generate Optimized Plan'}
         </button>
       </div>
 
@@ -84,7 +93,7 @@ export default function BlockPlanningPage() {
       <GanttChart
         trains={trains}
         plan={conflictResolved ? plan : []}
-        title="Block Planning Timeline — MAS–AJJ Line"
+        title="Block Planning Spatio-Temporal Timeline — Chennai Division (07:00 – 18:00)"
       />
 
       {/* Conflict Panel */}
@@ -108,32 +117,48 @@ export default function BlockPlanningPage() {
 
       {/* Approved Plan Table */}
       {planApproved && (
-        <div className="bg-[#1e293b] border border-emerald-800 rounded">
-          <div className="px-4 py-3 border-b border-emerald-800 flex items-center gap-2">
-            <CheckCircle2 size={14} className="text-emerald-400" />
-            <span className="text-xs font-bold uppercase tracking-widest text-emerald-400">Approved Block Plan</span>
+        <div className="gov-card border-emerald-600/70 overflow-hidden">
+          <div className="px-4 py-3 bg-[#061d15] border-b border-emerald-700/60 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <CheckCircle2 size={16} className="text-emerald-400" />
+              <span className="text-xs font-bold uppercase tracking-wider text-emerald-300">
+                OFFICIALLY SANCTIONED BLOCK MASTER PLAN
+              </span>
+            </div>
+            <span className="text-[10px] font-mono text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-700">
+              SANCTION AUTHORITY: SR/MAS/OP/2026/08
+            </span>
           </div>
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="border-b border-[#334155]">
-                {['Request', 'Department', 'Section', 'Start', 'End', 'Status'].map(h => (
-                  <th key={h} className="text-left px-4 py-2.5 text-[10px] uppercase font-bold text-slate-500 tracking-wider">{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {plan.map((p, i) => (
-                <tr key={p.id} className={`border-b border-[#263348] ${i % 2 === 0 ? '' : 'bg-[#172033]'}`}>
-                  <td className="px-4 py-2.5 font-mono font-bold text-amber-400">{p.id}</td>
-                  <td className="px-4 py-2.5 text-slate-300">{p.department}</td>
-                  <td className="px-4 py-2.5 font-mono text-slate-300">{p.section}</td>
-                  <td className="px-4 py-2.5 font-mono text-emerald-400">{p.start}</td>
-                  <td className="px-4 py-2.5 font-mono text-rose-400">{p.end}</td>
-                  <td className="px-4 py-2.5"><StatusBadge status="APPROVED" /></td>
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="bg-[#081526] text-slate-300 border-b border-[#203a5c]">
+                  {['Request ID', 'Department', 'Section', 'Sanctioned Start', 'Sanctioned End', 'Operating Status'].map(h => (
+                    <th key={h} className="text-left px-4 py-2.5 text-[10px] uppercase font-bold tracking-wider">{h}</th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {plan.map((p, i) => (
+                  <tr key={p.id} className={`border-b border-[#182e49] ${i % 2 === 0 ? 'bg-[#0d1e33]' : 'bg-[#0a1829]'}`}>
+                    <td className="px-4 py-2.5 font-mono font-bold text-amber-400">{p.id}</td>
+                    <td className="px-4 py-2.5 text-slate-200 font-medium">{p.department}</td>
+                    <td className="px-4 py-2.5 font-mono text-slate-200 font-medium">{p.section}</td>
+                    <td className="px-4 py-2.5 font-mono text-emerald-400 font-bold">{p.start}</td>
+                    <td className="px-4 py-2.5 font-mono text-rose-400 font-bold">{p.end}</td>
+                    <td className="px-4 py-2.5"><StatusBadge status="APPROVED" /></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="px-4 py-2 bg-[#061d15] border-t border-emerald-800 text-[11px] text-emerald-300 flex items-center justify-between">
+            <span className="flex items-center gap-1.5">
+              <FileCheck size={13} className="text-emerald-400" />
+              Transmitted to Divisional Control Room, PWI Field Units, and Station Masters on Line.
+            </span>
+            <span className="font-mono text-[10px] text-slate-400">STATUS: ACTIVE MASTER SCHEDULE</span>
+          </div>
         </div>
       )}
     </div>
