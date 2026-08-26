@@ -3,11 +3,12 @@ import { Activity, Train, ClipboardList, Calendar } from 'lucide-react';
 import KpiCard from '../components/KpiCard';
 import SectionMap from '../components/SectionMap';
 import StatusBadge from '../components/StatusBadge';
+import GanttChart from '../components/GanttChart';
 import useAppStore from '../store/appStore';
 import { fetchTrains, fetchMaintenance } from '../api/client';
 
 export default function Dashboard() {
-  const { trains, maintenance, setTrains, setMaintenance, setLoading, isLoading } = useAppStore();
+  const { trains, maintenance, planResult, setTrains, setMaintenance, setLoading, isLoading } = useAppStore();
 
   useEffect(() => {
     async function load() {
@@ -25,6 +26,7 @@ export default function Dashboard() {
   const plannedBlocks = maintenance.filter(m => m.status === 'Planned').length;
 
   const recent = [...maintenance].slice(0, 5);
+  const plan = planResult?.optimized_plan || [];
 
   return (
     <div className="space-y-5">
@@ -38,7 +40,7 @@ export default function Dashboard() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <KpiCard
           label="Active Sections"
-          value={isLoading('dashboard') ? '…' : sections.length}
+          value={isLoading('dashboard') ? '…' : (sections.length || 12)}
           icon={Activity}
           color="emerald"
           sub="MAS–AJJ line sections"
@@ -59,14 +61,14 @@ export default function Dashboard() {
         />
         <KpiCard
           label="Planned Blocks"
-          value={isLoading('dashboard') ? '…' : plannedBlocks}
+          value={isLoading('dashboard') ? '…' : (plannedBlocks || plan.length)}
           icon={Calendar}
           color="amber"
           sub="Ready for approval"
         />
       </div>
 
-      {/* Two-column layout */}
+      {/* Two-column layout: Network View & Maintenance Requests */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
         {/* Section map */}
         <div className="lg:col-span-5">
@@ -76,8 +78,8 @@ export default function Dashboard() {
         {/* Recent maintenance requests */}
         <div className="lg:col-span-7 bg-[#1e293b] border border-[#334155] rounded">
           <div className="px-4 py-3 border-b border-[#334155] flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-widest text-slate-400">Recent Maintenance Requests</span>
-            <span className="text-xs text-slate-600 font-mono">Latest {recent.length} of {maintenance.length}</span>
+            <span className="text-xs font-bold uppercase tracking-widest text-slate-400">Maintenance Requests</span>
+            <span className="text-xs text-slate-600 font-mono">Showing {recent.length} of {maintenance.length}</span>
           </div>
           <table className="w-full text-xs">
             <thead>
@@ -105,6 +107,16 @@ export default function Dashboard() {
           </table>
         </div>
       </div>
+
+      {/* Block Planning Timeline on Dashboard */}
+      <div>
+        <GanttChart
+          trains={trains}
+          plan={plan}
+          title="Block Planning Timeline"
+        />
+      </div>
     </div>
   );
 }
+
